@@ -1,0 +1,34 @@
+.gradient-anim-right {
+    display: inline-block;
+    background-position-x: 0px;
+    animation-duration: 3s;
+    animation-timing-function: cubic-bezier(0.48, 0.26, 0.49, 0.82);
+    animation-delay: 0s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    animation-fill-mode: none;
+    animation-play-state: running;
+    animation-name: bHafHd;
+    background-size: 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-color: #a04298;
+    background-image: linear-gradient(
+        90deg,
+        #f50057 0%,
+        #a04298 25%,
+        #32517b 75%,
+        #f50057 100%
+    );
+}
+
+@keyframes bHafHd {
+    from {
+        background-position-x: 0%;
+    }
+
+    to {
+        background-position-x: -200%;
+    }
+}
