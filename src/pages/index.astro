@@ -1,12 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Card from "../components/Card.astro";
 import TopNavBar from "../components/top-nav-bar/TopNavBar";
+import HeroSection from "../components/sections/hero/HeroSection";
 ---
 
 <Layout title="Welcome to Astro.">
     <TopNavBar />
-    <main class="pt-12">
+    <HeroSection />
+    <!-- <main class="pt-12">
         <h1>Welcome to <span class="text-gradient">Astro</span></h1>
         <p class="instructions">
             To get started, open the directory <code>src/pages</code> in your project.<br
@@ -36,7 +37,7 @@ import TopNavBar from "../components/top-nav-bar/TopNavBar";
                 body="Come say hi to our amazing Discord community. ❤️"
             />
         </ul>
-    </main>
+    </main> -->
 </Layout>
 
 <style>

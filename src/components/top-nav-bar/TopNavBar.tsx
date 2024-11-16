@@ -32,8 +32,13 @@ const TopNavBar = () => {
                 Robin Dalmy
             </a>
             <div className="flex flex-row gap-8 items-center">
-                {topNavBarItems.map(({ link, text, target }) => (
-                    <NavItem link={link} text={text} target={target} />
+                {topNavBarItems.map(({ link, text, target }, index) => (
+                    <NavItem
+                        key={index}
+                        link={link}
+                        text={text}
+                        target={target}
+                    />
                 ))}
             </div>
         </div>
