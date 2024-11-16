@@ -5,7 +5,7 @@ export default {
     content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
     theme: {
         fontFamily: {
-            sans: ["Geist-Medium", defaultTheme.fontFamily.sans],
+            sans: ["Geist", defaultTheme.fontFamily.sans],
         },
         extend: {
             colors: {
@@ -74,6 +74,19 @@ export default {
                     800: "#676767",
                     900: "#545454",
                     950: "#363636",
+                },
+                bunker: {
+                    50: "#f3f8f8",
+                    100: "#e0ebed",
+                    200: "#c5d9dc",
+                    300: "#9dbdc3",
+                    400: "#6d99a3",
+                    500: "#527d88",
+                    600: "#466974",
+                    700: "#3e5760",
+                    800: "#384b52",
+                    900: "#324047",
+                    950: "#11171a",
                 },
             },
         },
