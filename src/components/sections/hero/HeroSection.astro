@@ -1,13 +1,12 @@
 ---
 import GradientText from "@components/ui/GradientText";
-import Icon from "@components/ui/Icon.astro";
-import { TYPE_ANIMATIONS } from "@constants/type-animation.constants";
+import { CONTENT } from "@constants/content";
 import { TypeAnimation } from "react-type-animation";
 ---
 
 <section id="hero" class="relative">
     <div
-        class="px-10 pt-16 h-svh w-full flex flex-col justify-start items-start"
+        class="px-3 md:px-10 pt-16 h-svh w-full flex flex-col justify-start items-start"
     >
         <h1 id="hero-hi" class="text-5xl text-star-dust-300 mb-2">Hi 👋🏽</h1>
 
@@ -18,7 +17,7 @@ import { TypeAnimation } from "react-type-animation";
             I build things for Web and Mobile using{" "}
             <TypeAnimation
                 className="text-amaranth-500 font-mono text-2xl"
-                sequence={TYPE_ANIMATIONS.TECH_STACK_SEQ}
+                sequence={CONTENT.TYPE_ANIMATIONS.TECH_STACK_SEQ}
                 repeat={Infinity}
                 speed={20}
                 client:load

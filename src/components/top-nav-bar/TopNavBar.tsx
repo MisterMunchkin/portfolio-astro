@@ -1,33 +1,32 @@
 import type { ComponentProps } from "react";
 import NavItem from "./Item";
+import type { ClassValue } from "clsx";
+import { cn } from "@utils/cn";
 
 const topNavBarItems: ComponentProps<typeof NavItem>[] = [
-    {
-        text: "Whoami?",
-        link: "",
-    },
-    {
-        text: "Body of Work",
-        link: "",
-    },
-    {
-        text: "On the Side",
-        link: "",
-    },
-    {
-        text: "Hit me Up",
-        link: "",
-    },
     {
         text: "Resume",
         link: "/pdfs/Robin-Dalmy_Resume_15-11-2024.pdf",
         target: "_blank",
     },
+    {
+        text: "Blog",
+        link: "https://blog.robindalmy.com",
+        target: "_blank",
+    },
 ];
 
-const TopNavBar = () => {
+type Props = {
+    className?: ClassValue;
+};
+const TopNavBar = ({ className }: Props) => {
     return (
-        <div className="z-50 fixed px-3 py-4 flex flex-row justify-between items-center glass-effect w-full">
+        <div
+            className={cn(
+                "z-50 fixed px-3 md:px-10 py-4 flex flex-row justify-between items-center glass-effect w-full h-16",
+                className
+            )}
+        >
             <a className="text-amaranth-500 font-black text-xl" href="/">
                 Robin Dalmy
             </a>
