@@ -9,6 +9,9 @@ export default {
             mono: [defaultTheme.fontFamily.mono],
         },
         extend: {
+            backgroundImage: {
+                "hero-landscape": "url('/svgs/hero-landscape.svg')",
+            },
             colors: {
                 "vivid-violet": {
                     50: "#fdf6fd",

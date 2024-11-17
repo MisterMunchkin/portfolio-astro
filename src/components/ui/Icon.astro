@@ -1,0 +1,11 @@
+---
+type Icons = "hero-landscape";
+export interface Props {
+    icon: Icons;
+}
+
+const { icon } = Astro.props as Props;
+const { default: innerHTML } = await import(`/src/svgs/${icon}.svg?raw`);
+---
+
+<Fragment set:html={innerHTML} />

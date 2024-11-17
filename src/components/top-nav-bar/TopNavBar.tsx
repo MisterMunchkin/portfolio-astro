@@ -27,7 +27,7 @@ const topNavBarItems: ComponentProps<typeof NavItem>[] = [
 
 const TopNavBar = () => {
     return (
-        <div className="fixed px-3 py-4 flex flex-row justify-between items-center glass-effect w-full">
+        <div className="z-50 fixed px-3 py-4 flex flex-row justify-between items-center glass-effect w-full">
             <a className="text-amaranth-500 font-black text-xl" href="/">
                 Robin Dalmy
             </a>
