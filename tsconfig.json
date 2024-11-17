@@ -6,7 +6,7 @@
             "@components/*": ["src/components/*"],
             "@constants/*": ["src/constants/*"],
             "@css/*": ["src/css/*"],
-            "@utilities/*": ["src/utilities/*"]
+            "@utils/*": ["src/utils/*"]
         },
         "jsx": "react-jsx",
         "jsxImportSource": "react"

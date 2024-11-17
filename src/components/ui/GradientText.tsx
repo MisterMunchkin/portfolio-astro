@@ -1,5 +1,5 @@
 import "@css/animation-gradient-text.css";
-import { cn } from "@utilities/cn";
+import { cn } from "src/utils/cn";
 import type { ClassValue } from "clsx";
 import type { ReactNode } from "react";
 

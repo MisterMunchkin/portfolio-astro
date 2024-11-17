@@ -6,6 +6,7 @@ export default {
     theme: {
         fontFamily: {
             sans: ["Geist", defaultTheme.fontFamily.sans],
+            mono: [defaultTheme.fontFamily.mono],
         },
         extend: {
             colors: {

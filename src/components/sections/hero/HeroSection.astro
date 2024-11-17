@@ -1,0 +1,26 @@
+---
+import GradientText from "@components/ui/GradientText";
+import { TYPE_ANIMATIONS } from "@constants/type-animation.constants";
+import { TypeAnimation } from "react-type-animation";
+---
+
+<section
+    id="hero"
+    class="px-10 h-svh w-full flex flex-col justify-center items-start"
+>
+    <h1 id="hero-hi" class="text-5xl text-star-dust-300">Hi 👋🏽</h1>
+
+    <h2 class="text-5xl text-star-dust-300 mb-2">
+        I'm <GradientText>Robin Dalmy</GradientText>
+    </h2>
+    <h2 class="text-2xl text-star-dust-600 my-0">
+        I build things for Web and Mobile using{" "}
+        <TypeAnimation
+            className="text-amaranth-500 font-mono text-2xl"
+            sequence={TYPE_ANIMATIONS.TECH_STACK_SEQ}
+            repeat={Infinity}
+            speed={20}
+            client:load
+        />
+    </h2>
+</section>
