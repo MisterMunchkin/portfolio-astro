@@ -1,0 +1,14 @@
+{
+    "title": "Application Developer",
+    "company": "Vertere",
+    "timeline": "April 2018 - April 2019",
+    "website": "https://www.vertere-gs.com",
+    "points": [
+        "Contracted for Accenture where I worked as a Full Stack developer using ASP.Net, AngularJs, T-SQL. I also designed and deployed several Azure Cloud Services, and designed and implemented Azure DevOps CI/CD pipeline",
+        "Built several robust and maintainable features that helped employees and project managers deal with their onboarding/offboarding more efficiently",
+        "Led the team on optimizing various features due to the increase in projects which brought loading times down to 83%",
+        "Led team in creating the production instance of both our AppService and SendGrid implementation",
+        "Initiated and led the team onto utilizing Azure Slot Deployment setup. This decreased warm-up times from 3 minutes to less than 30 seconds and made the app highly available",
+        "Initiated and implemented various architecture optimizations, and security enhancements to follow industry-standard principles like SOLID and DRY"
+    ]
+}

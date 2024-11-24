@@ -1,0 +1,15 @@
+{
+    "title": "Application Developer",
+    "company": "Accenture",
+    "timeline": "April 2019 - July 2021",
+    "website": "https://www.accenture.com/ph-en",
+    "points": [
+        "Absorbed into Accenture from Vertere, and was also recruited for a project that used Python, Machine Learning, and RPAs to automate technical support workflows for an external client",
+        "Received Azure Fundamentals (AZ-900) certification in October 2020",
+        "Led and implemented Logic Apps to offload heavy tasks from our service which led to a significant performance boost",
+        "Initiated and maintained our GIT branching strategy and Continuous Integration (CI)/Continuous Development (CD) which increased our release efficiency",
+        "Built an Error handling implementation in our APIs that reduced duplicate code throughout our service by up to 40%",
+        "Created and implemented automation workflows and implemented Automation Anywhere",
+        "Created and implemented python scripts to handle more complex data sets for the workflows"
+    ]
+}

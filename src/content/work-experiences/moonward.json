@@ -1,0 +1,12 @@
+{
+    "title": "Front End Engineer",
+    "company": "Moonward",
+    "timeline": "June 2024 - Present",
+    "website": "https://www.moonward.com.au",
+    "points": [
+        "Developed applications leveraging ReactJs, NextJs, ReactNative, and Expo",
+        "Leveraging highly performant caching and state-management software such as Tanstack and Zustand",
+        "Collaborated with teammates to create highly reusable UI components, streamlining efficiency and greatly improving Developer Experience",
+        "Regularly presented application progress to clients, gathering feedback and aligning project goals"
+    ]
+}

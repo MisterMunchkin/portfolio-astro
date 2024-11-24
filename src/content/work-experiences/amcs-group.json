@@ -1,0 +1,14 @@
+{
+    "title": "Senior Software Developer",
+    "company": "AMCS Group",
+    "timeline": "February 2023 - January 2024",
+    "website": "https://www.amcsgroup.com/",
+    "points": [
+        "Developed rich user interactive web applications with specialization in Angular Development",
+        "Designed and developed various features with rich user interactivity centered around Maps using Leaflet.Js and AG Grid. Resulted in significantly enhanced user interaction and advanced application usability",
+        "Conceptualized and authored reusable and maintainable Angular Components, Services, and Directives resulting in reusability for core components across new features",
+        "Expanded and coordinated Test Driven Development in Angular and .Net using Jasmine, Gherkin, and SpecFlow. This led to an increase in Unit and Integration test cases for new features and fixes",
+        "Collaborated heavily with teammates on code design and maintainability streamlining updates and fixes due to the rehabilitated coding structure",
+        "Explored and refactored Angular RxJs logic within various components and services diminishing potential memory leaks and improved maintainability within the application"
+    ]
+}

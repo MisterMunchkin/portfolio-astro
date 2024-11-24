@@ -1,0 +1,14 @@
+{
+    "title": "Full Stack C# Developer",
+    "company": "CoDev",
+    "timeline": "July 2021 - February 2023",
+    "website": "https://codev.com",
+    "points": [
+        "Worked as a Full Stack C#, Angular, iOS and Android developer for my client",
+        "Enabled mobile access for HID readers by ejecting an Expo app to implement and integrate a third party SDK in both iOS and Android, exposing the functionality to React Native using React Native Modules.",
+        "Improved startup efficiency by up to 25% for their user-facing application by optimizing the Angular NgRx store and RxJs.",
+        "Worked with a team of 3 Full Stack Developers, the CTO and Senior Architect in conceptualization, design, and development to build several user-facing, robust, and maintainable features using Angular, .Net Core, and Entity Framework Core migrations for the web, and React-Native, Expo, iOS, and Android for mobile",
+        "Implemented optimizations for client-side image caching in Angular, which improved loading times by 60%.",
+        "Modernized the UI UX of the older features using SCSS."
+    ]
+}
