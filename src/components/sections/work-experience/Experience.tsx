@@ -3,6 +3,9 @@ import { Card, CardBody, CardHeader } from "@nextui-org/card";
 
 type Props = {};
 
+/**
+ * @deprecated - in favor of using astro content collections with ssg
+ */
 const Experience = ({}: Props) => {
     return (
         <div className="flex flex-col justify-center items-start gap-10 overflow-scroll">
