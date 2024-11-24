@@ -2,11 +2,12 @@
 import GradientText from "@components/ui/GradientText";
 import { CONTENT } from "@constants/content";
 import { TypeAnimation } from "react-type-animation";
+import { Icon } from "astro-icon/components";
 ---
 
-<section id="hero" class="relative">
+<section id="hero" class="relative h-svh">
     <div
-        class="px-3 md:px-10 pt-16 h-svh w-full flex flex-col justify-start items-start"
+        class="px-3 md:px-10 pt-16 h-full w-full flex flex-col justify-start items-start"
     >
         <h1 id="hero-hi" class="text-5xl text-star-dust-300 mb-2">Hi 👋🏽</h1>
 
@@ -23,9 +24,5 @@ import { TypeAnimation } from "react-type-animation";
                 client:load
             />
         </h2>
-    </div>
-    <div
-        class="bg-hero-landscape absolute bg-cover bg-center bg-no-repeat bottom-0 w-full h-full -z-50"
-    >
     </div>
 </section>
