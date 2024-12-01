@@ -2,7 +2,9 @@
 import GradientText from "@components/ui/GradientText";
 import { CONTENT } from "@constants/content";
 import { TypeAnimation } from "react-type-animation";
-import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import HeroLandscape from "@content/images/hero-landscape.svg";
+import { cn } from "@utils/cn";
 ---
 
 <section id="hero" class="relative h-svh">
@@ -25,4 +27,9 @@ import { Icon } from "astro-icon/components";
             />
         </h2>
     </div>
+    <Image
+        class={cn("absolute bottom-0")}
+        src={HeroLandscape}
+        alt={"Hero Landscape"}
+    />
 </section>
