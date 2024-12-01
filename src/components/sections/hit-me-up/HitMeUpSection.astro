@@ -4,7 +4,7 @@ import { TypeAnimation } from "react-type-animation";
 import HeroLandscape from "@content/images/hero-landscape.svg";
 import { Image } from "astro:assets";
 import { cn } from "@utils/cn";
-import Icon from "@components/ui/Icon.astro";
+import { Icon } from "astro-icon/components";
 
 const channels = [
     {
@@ -59,7 +59,12 @@ const channels = [
                             target="_blank"
                             aria-label={`Link to ${url}`}
                         >
-                            <Icon icon={icon} />
+                            <Icon
+                                name={`${icon}`}
+                                width={64}
+                                height={64}
+                                color={"white"}
+                            />
                         </a>
                     ))
                 }
