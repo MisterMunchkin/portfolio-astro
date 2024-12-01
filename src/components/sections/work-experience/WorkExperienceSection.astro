@@ -1,6 +1,5 @@
 ---
 import GradientText from "@components/ui/GradientText";
-import Experience from "@components/sections/work-experience/Experience";
 import { getCollection } from "astro:content";
 import WorkCard from "./WorkCard";
 
@@ -19,13 +18,10 @@ const experiences = experienceCollection
                 >Work Experience</GradientText
             >
         </h2>
-        <!-- <Experience /> -->
-        <!-- <div class="flex"> -->
         <div
             class="flex py-4 gap-8 flex-row flex-nowrap items-start overflow-y-auto"
         >
             {experiences.map((experience) => <WorkCard work={experience} />)}
         </div>
-        <!-- </div> NOTE: Don't add a second page for work details anymore, just make it simple and have the work cards scroll horizontally -->
     </div>
 </section>

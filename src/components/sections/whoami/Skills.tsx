@@ -2,6 +2,7 @@ import { CONTENT } from "@constants/content";
 
 type Props = {};
 
+// Should be updated to use the content platform from Astro
 const Skills = ({}: Props) => {
     return (
         <div className="flex flex-row justify-center items-start gap-20 gap-y-10 flex-wrap">
