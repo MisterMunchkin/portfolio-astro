@@ -33,6 +33,7 @@
     "typescript": "^5.6.3"
   },
   "devDependencies": {
+    "@iconify-json/line-md": "^1.2.2",
     "prettier-plugin-astro": "^0.14.1"
   }
 }

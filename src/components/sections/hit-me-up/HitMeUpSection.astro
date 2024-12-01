@@ -5,6 +5,7 @@ import { TypeAnimation } from "react-type-animation";
 import HeroLandscape from "@content/images/hero-landscape.svg";
 import { Image } from "astro:assets";
 import { cn } from "@utils/cn";
+import Icon from "@components/ui/Icon.astro";
 ---
 
 <section id="hit-me-up" class="px-3 md:px-10 pt-16 w-full h-svh pb-10 relative">
@@ -29,6 +30,11 @@ import { cn } from "@utils/cn";
             speed={20}
             client:visible
         />
+        <div class="absolute bottom-3">
+            <div class="flex flex-row flex-1 justify-center">
+                <Icon icon="github-icon" />
+            </div>
+        </div>
     </div>
     <Image
         class={cn("absolute bottom-0 left-0 right-0 z-0")}
