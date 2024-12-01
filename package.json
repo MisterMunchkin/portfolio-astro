@@ -14,7 +14,6 @@
     "@astrojs/mdx": "^3.1.9",
     "@astrojs/react": "^3.6.2",
     "@astrojs/tailwind": "^5.1.2",
-    "@gsap/react": "^2.1.1",
     "@nextui-org/card": "^2.0.34",
     "@nextui-org/system": "^2.2.6",
     "@nextui-org/theme": "^2.2.11",
@@ -23,8 +22,6 @@
     "astro": "^4.16.13",
     "astro-icon": "^1.1.4",
     "clsx": "^2.1.1",
-    "framer-motion": "^11.11.17",
-    "gsap": "^3.12.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-type-animation": "^3.2.0",
@@ -34,7 +31,6 @@
     "typescript": "^5.6.3"
   },
   "devDependencies": {
-    "@iconify-json/line-md": "^1.2.2",
     "prettier-plugin-astro": "^0.14.1"
   }
 }
