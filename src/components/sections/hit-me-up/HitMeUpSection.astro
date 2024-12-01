@@ -54,7 +54,11 @@ const channels = [
             <div class="flex flex-row gap-4 flex-1 justify-center flex-wrap">
                 {
                     channels.map(({ icon, url }, index) => (
-                        <a key={index} href={url} target="_blank">
+                        <a
+                            href={url}
+                            target="_blank"
+                            aria-label={`Link to ${url}`}
+                        >
                             <Icon icon={icon} />
                         </a>
                     ))
