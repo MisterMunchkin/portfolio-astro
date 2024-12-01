@@ -14,7 +14,7 @@ const WorkCard = ({ work }: Props) => {
     const { company, timeline, title, points, website } = work;
 
     return (
-        <Card className="bg-shark-950 max-h-96 px-4 py-2">
+        <Card className="bg-shark-950 max-h-[700px] md:max-h-96 px-4 py-2">
             <CardHeader className="flex flex-col items-start">
                 <p className="text-star-dust-300 ">
                     {title}

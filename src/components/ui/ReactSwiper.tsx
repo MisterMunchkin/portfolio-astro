@@ -11,20 +11,19 @@ import "swiper/css/scrollbar";
 type Props<TData> = {
     data: TData[];
     render: (item: TData) => ReactNode;
+    navigation?: boolean;
 };
 
-const ReactSwiper = <TData,>({ data, render }: Props<TData>) => {
+const ReactSwiper = <TData,>({ data, render, navigation }: Props<TData>) => {
     return (
         <Swiper
             className="py-4"
-            navigation
+            navigation={navigation}
             scrollbar={{ draggable: true }}
             modules={[Navigation, Scrollbar, A11y]}
             spaceBetween={20}
-            slidesPerView={2}
-            onSlideChange={() => console.log("slide change")}
-            onSwiper={(swiper) => console.log(swiper)}
-            style={{ paddingBottom: "50px" }}
+            slidesPerView={1}
+            style={{ paddingBottom: "30px" }}
         >
             {data.map((item, index) => (
                 <SwiperSlide key={index}>{render(item)}</SwiperSlide>
