@@ -1,11 +1,29 @@
 ---
 import GradientText from "@components/ui/GradientText";
-import { DEFAULT_SPEED } from "@constants/type-animation.constants";
 import { TypeAnimation } from "react-type-animation";
 import HeroLandscape from "@content/images/hero-landscape.svg";
 import { Image } from "astro:assets";
 import { cn } from "@utils/cn";
 import Icon from "@components/ui/Icon.astro";
+
+const channels = [
+    {
+        icon: "github-icon",
+        url: "https://github.com/MisterMunchkin",
+    },
+    {
+        icon: "linkedin-icon",
+        url: "https://www.linkedin.com/in/robin-dalmy1997",
+    },
+    {
+        icon: "instagram-icon",
+        url: "https://www.instagram.com/robindalmy/",
+    },
+    {
+        icon: "email-icon",
+        url: "mailto:robindalmy@gmail.com",
+    },
+];
 ---
 
 <section id="hit-me-up" class="px-3 md:px-10 pt-16 w-full h-svh pb-10 relative">
@@ -25,14 +43,19 @@ import Icon from "@components/ui/Icon.astro";
             className="font-mono text-lg text-star-dust-400"
             sequence={[
                 "> Feel free to email or dm me through any of my channels 👇",
-                DEFAULT_SPEED,
             ]}
-            speed={20}
+            speed={40}
             client:visible
         />
         <div class="absolute bottom-3">
-            <div class="flex flex-row flex-1 justify-center">
-                <Icon icon="github-icon" />
+            <div class="flex flex-row gap-4 flex-1 justify-center flex-wrap">
+                {
+                    channels.map(({ icon, url }, index) => (
+                        <a key={index} href={url} target="_blank">
+                            <Icon icon={icon} />
+                        </a>
+                    ))
+                }
             </div>
         </div>
     </div>
