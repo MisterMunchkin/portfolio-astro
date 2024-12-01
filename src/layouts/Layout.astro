@@ -33,6 +33,29 @@ const { title } = Astro.props;
     @tailwind components;
     @tailwind utilities;
 
+    /* width */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: theme(colors.bunker.950);
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: theme(colors.star-dust.800);
+        opacity: 0.5;
+        border-radius: 5px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: theme(colors.amaranth.500);
+    }
+
     @layer base {
         @font-face {
             font-family: "Geist";
