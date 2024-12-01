@@ -1,0 +1,38 @@
+---
+import GradientText from "@components/ui/GradientText";
+import { DEFAULT_SPEED } from "@constants/type-animation.constants";
+import { TypeAnimation } from "react-type-animation";
+import HeroLandscape from "@content/images/hero-landscape.svg";
+import { Image } from "astro:assets";
+import { cn } from "@utils/cn";
+---
+
+<section id="hit-me-up" class="px-3 md:px-10 pt-16 w-full h-svh pb-10 relative">
+    <h2 class="text-center">
+        <GradientText className="text-5xl mb-5 "> Hit Me Up! </GradientText>
+    </h2>
+
+    <div
+        class="max-w-xl bg-vivid-violet-950 px-8 rounded-lg shadow-xl pt-12 h-72 z-50 relative mx-auto"
+    >
+        <div class="absolute left-3 top-3 flex flex-row gap-2">
+            <div class="h-4 w-4 bg-[#00CA4E] rounded-full"></div>
+            <div class="h-4 w-4 bg-[#FFBD44] rounded-full"></div>
+            <div class="h-4 w-4 bg-[#FF605C] rounded-full"></div>
+        </div>
+        <TypeAnimation
+            className="font-mono text-lg text-star-dust-400"
+            sequence={[
+                "> Feel free to email or dm me through any of my channels 👇",
+                DEFAULT_SPEED,
+            ]}
+            speed={20}
+            client:visible
+        />
+    </div>
+    <Image
+        class={cn("absolute bottom-0 left-0 right-0 z-0")}
+        src={HeroLandscape}
+        alt={"Hero Landscape"}
+    />
+</section>
