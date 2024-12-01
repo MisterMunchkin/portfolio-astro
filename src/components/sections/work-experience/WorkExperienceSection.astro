@@ -1,7 +1,7 @@
 ---
 import GradientText from "@components/ui/GradientText";
 import { getCollection } from "astro:content";
-import WorkCard from "./WorkCard";
+import WorkSwiper from "./WorkSwiper";
 
 const experienceCollection = await getCollection("work-experiences");
 const experiences = experienceCollection
@@ -16,10 +16,6 @@ const experiences = experienceCollection
                 >Work Experience</GradientText
             >
         </h2>
-        <!-- <div
-            class="flex py-4 gap-8 flex-row flex-nowrap items-start overflow-y-auto"
-        >
-            {experiences.map((experience) => <WorkCard work={experience} />)}
-        </div> -->
+        <WorkSwiper experiences={experiences} client:load />
     </div>
 </section>
