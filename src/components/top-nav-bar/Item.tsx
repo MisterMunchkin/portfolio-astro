@@ -1,4 +1,4 @@
-import type { ComponentProps, HTMLAttributeAnchorTarget } from "react";
+import type { HTMLAttributeAnchorTarget } from "react";
 
 type Props = {
     text: string;

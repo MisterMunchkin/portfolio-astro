@@ -1,6 +1,5 @@
 import type { WorkExperience } from "@content/config";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
-import { Image } from "astro:assets";
 
 type Props = {
     work: WorkExperience;
