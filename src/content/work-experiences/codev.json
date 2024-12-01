@@ -10,5 +10,6 @@
         "Worked with a team of 3 Full Stack Developers, the CTO and Senior Architect in conceptualization, design, and development to build several user-facing, robust, and maintainable features using Angular, .Net Core, and Entity Framework Core migrations for the web, and React-Native, Expo, iOS, and Android for mobile",
         "Implemented optimizations for client-side image caching in Angular, which improved loading times by 60%.",
         "Modernized the UI UX of the older features using SCSS."
-    ]
+    ],
+    "position": 2
 }

@@ -7,6 +7,8 @@ const workExperienceSchema = (image: ImageFunction) =>
         timeline: z.string(),
         website: z.string(),
         points: z.array(z.string()),
+        coverImage: image().optional(),
+        position: z.number(),
     });
 
 const experienceCollection = defineCollection({

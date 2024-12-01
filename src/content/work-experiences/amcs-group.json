@@ -10,5 +10,6 @@
         "Expanded and coordinated Test Driven Development in Angular and .Net using Jasmine, Gherkin, and SpecFlow. This led to an increase in Unit and Integration test cases for new features and fixes",
         "Collaborated heavily with teammates on code design and maintainability streamlining updates and fixes due to the rehabilitated coding structure",
         "Explored and refactored Angular RxJs logic within various components and services diminishing potential memory leaks and improved maintainability within the application"
-    ]
+    ],
+    "position": 3
 }

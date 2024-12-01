@@ -10,5 +10,6 @@
         "Led team in creating the production instance of both our AppService and SendGrid implementation",
         "Initiated and led the team onto utilizing Azure Slot Deployment setup. This decreased warm-up times from 3 minutes to less than 30 seconds and made the app highly available",
         "Initiated and implemented various architecture optimizations, and security enhancements to follow industry-standard principles like SOLID and DRY"
-    ]
+    ],
+    "position": 0
 }
