@@ -6,7 +6,7 @@ import { cn } from "@utils/cn";
 const topNavBarItems: ComponentProps<typeof NavItem>[] = [
     {
         text: "📋 Resume",
-        link: "/pdfs/Robin-Dalmy_Resume_15-11-2024.pdf",
+        link: "/pdfs/Resume_03-02-2026.pdf",
         target: "_blank",
     },
     {
