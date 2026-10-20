@@ -1,0 +1,306 @@
+---
+import { createSignal, projectSignal } from "../utils/signal-geometry";
+const faces = projectSignal(createSignal("systems", 48, 8), 700, 700);
+---
+
+<div class="signal-form" data-mode="systems">
+  <div
+    class="signal-stage"
+    role="img"
+    aria-label="A continuous citron surface woven into a three-dimensional knot. An abstract illustration of connected engineering work."
+  >
+    <svg
+      class="signal-fallback"
+      viewBox="0 0 700 700"
+      aria-hidden="true"
+      focusable="false"
+    >
+      {
+        faces.map((face) => (
+          <path
+            d={
+              face.points
+                .map(
+                  (p, i) =>
+                    `${i ? "L" : "M"}${p.map((v) => v.toFixed(1)).join(",")}`,
+                )
+                .join(" ") + "Z"
+            }
+            fill={face.fill}
+            stroke={face.fill}
+            stroke-width=".6"
+          />
+        ))
+      }
+    </svg>
+    <canvas class="signal-canvas" aria-hidden="true" hidden></canvas>
+    <span class="signal-axis" aria-hidden="true"><i></i><i></i><i></i></span>
+  </div>
+  <div class="signal-instrument" hidden>
+    <p class="signal-instruction mono">Drag to turn · arrow keys to rotate</p>
+    <div class="signal-rotation">
+      <label class="mono" for="signal-rotation">Rotation</label><input
+        type="range"
+        id="signal-rotation"
+        min="-180"
+        max="180"
+        value="-32"
+      /><button class="signal-reset" type="button"
+        >Reset <span aria-hidden="true">↺</span></button
+      >
+    </div>
+  </div>
+  <div
+    class="signal-selector"
+    role="group"
+    aria-label="Explore engineering disciplines"
+    hidden
+  >
+    <button type="button" data-signal="mobile" aria-pressed="false"
+      ><span class="mono">01</span> Mobile <span aria-hidden="true">↗</span
+      ></button
+    >
+    <button type="button" data-signal="systems" aria-pressed="true"
+      ><span class="mono">02</span> Systems <span aria-hidden="true">↗</span
+      ></button
+    >
+    <button type="button" data-signal="agents" aria-pressed="false"
+      ><span class="mono">03</span> Agents <span aria-hidden="true">↗</span
+      ></button
+    >
+  </div>
+  <div class="signal-caption">
+    <span class="mono signal-caption-label">The connective thread</span><p
+      class="signal-description"
+      aria-live="polite"
+    >
+      Finding the shape of a complex problem.
+    </p><a class="signal-story" href="/work/shared-interfaces/"
+      >Explore web & product work <span aria-hidden="true">↗</span></a
+    >
+  </div>
+</div>
+
+<script>
+  import {
+    createSignal,
+    projectSignal,
+    type SignalMode,
+    type SurfaceFace,
+  } from "../utils/signal-geometry";
+  const root = document.querySelector<HTMLElement>(".signal-form");
+  if (root) {
+    const stage = root.querySelector<HTMLElement>(".signal-stage")!;
+    const canvas = root.querySelector<HTMLCanvasElement>("canvas")!;
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      const slider = root.querySelector<HTMLInputElement>("#signal-rotation")!;
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+      const finePointer = matchMedia("(hover: hover) and (pointer: fine)");
+      let yaw = -0.55,
+        pitch = 0.48,
+        frame = 0,
+        visible = true;
+      let width = 0,
+        height = 0;
+      let mesh: SurfaceFace[] = createSignal("systems", 112, 12);
+      let drag: {
+        x: number;
+        y: number;
+        yaw: number;
+        pitch: number;
+        id: number;
+        touch: boolean;
+        horizontal: boolean;
+      } | null = null;
+      const draw = () => {
+        if (!visible || !width || !height) return;
+        ctx.clearRect(0, 0, width, height);
+        for (const face of projectSignal(mesh, width, height, yaw, pitch)) {
+          ctx.beginPath();
+          face.points.forEach(([x, y], i) =>
+            i ? ctx.lineTo(x, y) : ctx.moveTo(x, y),
+          );
+          ctx.closePath();
+          ctx.fillStyle = face.fill;
+          ctx.strokeStyle = face.fill;
+          ctx.lineWidth = 0.65;
+          ctx.fill();
+          ctx.stroke();
+        }
+        root.dataset.yaw = yaw.toFixed(3);
+        slider.value = String(Math.round((yaw * 180) / Math.PI));
+        slider.setAttribute("aria-valuetext", `${slider.value} degrees`);
+        canvas.hidden = false;
+        root.classList.add("signal-ready");
+      };
+      const requestDraw = () => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(draw);
+      };
+      const reset = () => {
+        yaw = -0.55;
+        pitch = 0.48;
+        requestDraw();
+      };
+      const resize = new ResizeObserver(([entry]) => {
+        width = entry.contentRect.width;
+        height = entry.contentRect.height;
+        const dpr = Math.min(devicePixelRatio || 1, 1.75);
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        requestDraw();
+      });
+      resize.observe(stage);
+      const intersection = new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible) requestDraw();
+        else cancelAnimationFrame(frame);
+      });
+      intersection.observe(stage);
+      stage.setAttribute("role", "group");
+      stage.tabIndex = 0;
+      stage.setAttribute(
+        "aria-label",
+        "Interactive 3D signal. Drag horizontally, use arrow keys to rotate, or Home to reset. Vertical scrolling stays available.",
+      );
+      root
+        .querySelectorAll<HTMLElement>(".signal-instrument, .signal-selector")
+        .forEach((element) => (element.hidden = false));
+      stage.addEventListener("pointerdown", (event) => {
+        if (event.button !== 0 && event.pointerType === "mouse") return;
+        drag = {
+          x: event.clientX,
+          y: event.clientY,
+          yaw,
+          pitch,
+          id: event.pointerId,
+          touch: event.pointerType === "touch",
+          horizontal: false,
+        };
+        stage.setPointerCapture(event.pointerId);
+        stage.classList.add("is-dragging");
+      });
+      stage.addEventListener("pointermove", (event) => {
+        if (drag) {
+          if (drag.touch && !drag.horizontal) {
+            const dx = Math.abs(event.clientX - drag.x);
+            const dy = Math.abs(event.clientY - drag.y);
+            if (dy > 8 && dy > dx) return release();
+            if (dx < 8) return;
+            drag.horizontal = true;
+          }
+          yaw = Math.max(
+            -Math.PI,
+            Math.min(Math.PI, drag.yaw + (event.clientX - drag.x) * 0.009),
+          );
+          pitch = Math.max(
+            -1.1,
+            Math.min(1.1, drag.pitch + (event.clientY - drag.y) * 0.005),
+          );
+          requestDraw();
+        } else if (
+          !reduced.matches &&
+          finePointer.matches &&
+          event.pointerType === "mouse"
+        ) {
+          const rect = stage.getBoundingClientRect();
+          yaw = -0.55 + ((event.clientX - rect.left) / rect.width - 0.5) * 0.38;
+          pitch = 0.48 + ((event.clientY - rect.top) / rect.height - 0.5) * 0.2;
+          requestDraw();
+        }
+      });
+      const release = () => {
+        const pointerId = drag?.id;
+        drag = null;
+        if (pointerId !== undefined && stage.hasPointerCapture(pointerId))
+          stage.releasePointerCapture(pointerId);
+        stage.classList.remove("is-dragging");
+      };
+      stage.addEventListener("pointerup", release);
+      stage.addEventListener("pointercancel", release);
+      stage.addEventListener("lostpointercapture", release);
+      stage.addEventListener("keydown", (event) => {
+        if (
+          !["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home"].includes(
+            event.key,
+          )
+        )
+          return;
+        event.preventDefault();
+        if (event.key === "Home") return reset();
+        if (event.key === "ArrowLeft") yaw = Math.max(-Math.PI, yaw - 0.15);
+        if (event.key === "ArrowRight") yaw = Math.min(Math.PI, yaw + 0.15);
+        if (event.key === "ArrowUp") pitch = Math.max(-1.1, pitch - 0.1);
+        if (event.key === "ArrowDown") pitch = Math.min(1.1, pitch + 0.1);
+        requestDraw();
+      });
+      slider.addEventListener("input", () => {
+        yaw = (Number(slider.value) * Math.PI) / 180;
+        requestDraw();
+      });
+      root.querySelector(".signal-reset")!.addEventListener("click", reset);
+      const onMotionChange = () => {
+        release();
+        reset();
+      };
+      reduced.addEventListener("change", onMotionChange);
+      const info: Record<
+        SignalMode,
+        { description: string; href: string; title: string }
+      > = {
+        mobile: {
+          description: "Shared interfaces. Native possibilities.",
+          href: "/work/mobile-native/",
+          title: "Explore mobile engineering",
+        },
+        systems: {
+          description: "Finding the shape of a complex problem.",
+          href: "/work/shared-interfaces/",
+          title: "Explore web & product work",
+        },
+        agents: {
+          description: "People, plans, and agents. Connected.",
+          href: "/work/agent-workflows/",
+          title: "Explore agentic engineering",
+        },
+      };
+      root
+        .querySelectorAll<HTMLButtonElement>("[data-signal]")
+        .forEach((button) =>
+          button.addEventListener("click", () => {
+            const mode = button.dataset.signal as SignalMode;
+            mesh = createSignal(mode, 112, 12);
+            root.dataset.mode = mode;
+            root
+              .querySelectorAll("[data-signal]")
+              .forEach((item) =>
+                item.setAttribute("aria-pressed", String(item === button)),
+              );
+            root.querySelector<HTMLElement>(
+              ".signal-description",
+            )!.textContent = info[mode].description;
+            const link =
+              root.querySelector<HTMLAnchorElement>(".signal-story")!;
+            link.href = info[mode].href;
+            link.firstChild!.textContent = `${info[mode].title} `;
+            reset();
+          }),
+        );
+      window.addEventListener("pagehide", () => {
+        resize.disconnect();
+        intersection.disconnect();
+        cancelAnimationFrame(frame);
+        reduced.removeEventListener("change", onMotionChange);
+      });
+      window.addEventListener("pageshow", (event) => {
+        if (!event.persisted) return;
+        resize.observe(stage);
+        intersection.observe(stage);
+        reduced.addEventListener("change", onMotionChange);
+        requestDraw();
+      });
+    }
+  }
+</script>

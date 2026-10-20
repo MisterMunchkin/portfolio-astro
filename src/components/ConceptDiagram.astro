@@ -1,0 +1,46 @@
+---
+const { kind } = Astro.props;
+const diagrams: Record<
+  string,
+  { label: string; nodes: string[]; caption: string }
+> = {
+  mobile: {
+    label: "Across the platform boundary",
+    nodes: ["React Native", "Native modules", "iOS + Android"],
+    caption: "Shared application → native capability",
+  },
+  agents: {
+    label: "A human-guided build loop",
+    nodes: ["A reviewable plan", "Human feedback", "Agent execution"],
+    caption: "Intent → conversation → implementation",
+  },
+  web: {
+    label: "An interface, composed",
+    nodes: ["Reusable UI", "State + behaviour", "Product features"],
+    caption: "Common foundations → useful experiences",
+  },
+};
+const diagram = diagrams[kind] ?? diagrams.web;
+---
+
+<figure class="concept-diagram">
+  <div class="diagram-heading mono">
+    <span>{diagram.label}</span><span aria-hidden="true">FIG / 01</span>
+  </div><ol class="diagram-nodes">
+    {
+      diagram.nodes.map((node, i) => (
+        <li>
+          <strong>{node}</strong>
+          {i < 2 && (
+            <span class="diagram-connector" aria-hidden="true">
+              ↗
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol><figcaption class="mono">
+    {diagram.caption}
+    <span>Conceptual diagram</span>
+  </figcaption>
+</figure>
