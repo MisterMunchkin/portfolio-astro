@@ -1,0 +1,740 @@
+.practice-hero {
+  padding-bottom: 46px;
+}
+.practice-name {
+  font-size: clamp(78px, 12.15vw, 190px);
+  font-weight: 900;
+  letter-spacing: -0.082em;
+  line-height: 1.03;
+  white-space: nowrap;
+  margin-left: -0.007em;
+}
+.practice-name > span {
+  color: var(--acid);
+}
+.practice-deck {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  gap: 30px;
+}
+.practice-deck > p {
+  font-size: clamp(22px, 2.65vw, 39px);
+  letter-spacing: -0.04em;
+}
+.practice-deck em {
+  color: var(--acid);
+}
+.practice-deck .arrow-link {
+  min-width: 185px;
+}
+.practice-deck .arrow-link:hover {
+  color: var(--acid);
+}
+.mobile-tree-poster {
+  display: none;
+}
+.journey {
+  display: grid;
+  grid-template-columns: 43% 57%;
+  align-items: start;
+  gap: 0;
+  position: relative;
+  border-top: 1px solid var(--line);
+}
+.tree-rail {
+  position: sticky;
+  top: 20px;
+  padding-right: 48px;
+  padding-top: 24px;
+}
+.tree-studio {
+  position: relative;
+}
+.tree-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 8px;
+  color: var(--muted);
+}
+.tree-heading > span:last-child {
+  color: var(--acid);
+  font-size: 18px;
+}
+.tree-art {
+  position: relative;
+}
+.tree-stage {
+  width: 100%;
+  height: clamp(300px, 48vh, 560px);
+  position: relative;
+  cursor: grab;
+  touch-action: pan-y pinch-zoom;
+  z-index: 2;
+}
+.tree-stage.is-dragging {
+  cursor: grabbing;
+}
+.tree-canvas,
+.tree-fallback {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  object-fit: contain;
+}
+.tree-ready .tree-fallback {
+  visibility: hidden;
+}
+.tree-orbit {
+  position: absolute;
+  width: 82%;
+  height: 80%;
+  top: 4%;
+  left: 9%;
+  border: 1px solid #454937;
+  border-radius: 50%;
+  transform: rotate(-20deg);
+  background: radial-gradient(ellipse at 50% 50%, #d3ff520a, transparent 70%);
+}
+.tree-orbit:after {
+  content: "";
+  position: absolute;
+  inset: 14%;
+  border: 1px dotted #3e4330;
+  border-radius: 50%;
+}
+.tree-ground {
+  position: absolute;
+  bottom: 5.5%;
+  height: 18px;
+  width: 38%;
+  left: 31%;
+  background: #0009;
+  filter: blur(9px);
+  border-radius: 50%;
+}
+.tree-coordinate {
+  color: var(--muted);
+  position: absolute;
+  bottom: 4%;
+  left: 0;
+  font-size: 7px;
+}
+.tree-caption {
+  padding-top: 12px;
+}
+.tree-eyebrow {
+  color: var(--muted);
+  font-size: 8px;
+}
+.tree-chapter {
+  font-size: clamp(20px, 2.25vw, 31px);
+  letter-spacing: -0.045em;
+  line-height: 1.35;
+  margin-top: 7px;
+}
+.tree-chapter em {
+  color: var(--acid);
+}
+.tree-chapters {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 23px;
+  gap: 12px;
+}
+.tree-chapters a {
+  border-top: 1px solid var(--line);
+  min-height: 53px;
+  padding-top: 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 10px;
+  color: var(--muted);
+}
+.tree-chapters .mono {
+  font-size: 7px;
+}
+.tree-chapters a[aria-current] {
+  border-color: var(--acid);
+  color: var(--acid);
+}
+.tree-chapters a:hover {
+  color: var(--paper);
+}
+.tree-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 12px;
+}
+.tree-controls label {
+  font-size: 8px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.tree-controls input {
+  accent-color: var(--acid);
+  height: 44px;
+  min-width: 40px;
+  width: 100%;
+  cursor: ew-resize;
+}
+.tree-reset {
+  min-height: 44px;
+  font-size: 10px;
+  background: none;
+  color: var(--paper);
+  padding: 0 2px;
+  white-space: nowrap;
+}
+.tree-reset:hover {
+  color: var(--acid);
+}
+.tree-hint {
+  color: var(--muted);
+  font-size: 7px;
+  margin-top: 4px;
+}
+.journey-content {
+  min-width: 0;
+  border-left: 1px solid var(--line);
+}
+.journey-content > section {
+  padding: 40px 42px 60px;
+  scroll-margin-top: 20px;
+}
+.journey-content > section > .frame {
+  width: 100%;
+  margin: 0;
+}
+.journey-content .section-label {
+  margin-bottom: 34px;
+  gap: 25px;
+  font-size: 8px;
+  padding-bottom: 18px;
+}
+.journey-content .section-label > span {
+  font-size: 8px;
+  text-align: right;
+}
+.journey-content h2 {
+  font-size: clamp(45px, 4.6vw, 70px);
+  line-height: 1.05;
+  letter-spacing: -0.065em;
+}
+.journey-content .about-section {
+  background: var(--ink);
+}
+.journey-content .about-section h2 {
+  margin-bottom: 30px;
+}
+.journey-content .about-body {
+  display: block;
+  margin: 0;
+}
+.journey-content .about-intro {
+  font-size: clamp(22px, 2vw, 30px);
+  line-height: 1.45;
+  max-width: 580px;
+  letter-spacing: -0.035em;
+}
+.journey-content .about-body > div {
+  margin-top: 26px;
+  max-width: 540px;
+}
+.journey-content .about-body > div > p {
+  font-size: 14px;
+  line-height: 1.85;
+  margin-top: 18px;
+}
+.journey-content .about-body .arrow-link {
+  margin-top: 20px;
+  font-size: 11px;
+}
+.journey-content .about-body .arrow-link:hover {
+  color: var(--acid);
+}
+.journey-content .toolkit {
+  display: block;
+  margin-top: 44px;
+  padding-top: 24px;
+}
+.journey-content .toolkit > .mono {
+  margin-bottom: 24px;
+  font-size: 8px;
+}
+.journey-content .toolkit dl {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 26px 24px;
+}
+.journey-content .toolkit dt {
+  font-size: 11px;
+}
+.journey-content .toolkit dd {
+  font-size: 11px;
+  line-height: 1.85;
+}
+.journey-content .work-heading {
+  display: block;
+  margin-bottom: 36px;
+}
+.journey-content .work-heading > p {
+  font-size: 13px;
+  margin-top: 22px;
+  max-width: 410px;
+  line-height: 1.8;
+}
+.journey-content .work-heading > p > br {
+  display: none;
+}
+.journey-content .work-row {
+  grid-template-columns: 40px 1fr;
+  gap: 0 18px;
+  padding-block: 30px;
+}
+.journey-content .work-number {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: 28px;
+  padding-top: 28px;
+  letter-spacing: -1.5px;
+}
+.journey-content .work-title {
+  grid-column: 2;
+  padding-right: 40px;
+}
+.journey-content .work-title > p {
+  font-size: 8px;
+  min-height: 0;
+  line-height: 1.7;
+  margin-bottom: 13px;
+}
+.journey-content .work-title h3 {
+  font-size: clamp(30px, 3.3vw, 49px);
+  letter-spacing: -0.055em;
+  line-height: 1.08;
+}
+.journey-content .work-arrow {
+  position: absolute;
+  width: 36px;
+  height: 44px;
+  top: 27px;
+  right: 0;
+  margin: 0;
+  border: 0;
+  font-size: 28px;
+}
+.journey-content .work-description {
+  grid-column: 2;
+  margin-top: 20px;
+}
+.journey-content .work-context {
+  min-height: 0;
+  font-size: 8px;
+}
+.journey-content .work-description > p:not(.mono) {
+  font-size: 13px;
+  line-height: 1.85;
+  margin-top: 12px;
+  max-width: none;
+}
+.journey-content .work-description .technology-list {
+  margin-top: 17px;
+  font-size: 8px;
+  gap: 6px 12px;
+}
+.journey-content .work-description .arrow-link {
+  font-size: 11px;
+  margin-top: 15px;
+}
+.journey-content .experience-section h2 {
+  margin-bottom: 35px;
+}
+.journey-content .current-role {
+  grid-template-columns: 1fr auto;
+  gap: 17px;
+  padding-block: 28px;
+}
+.journey-content .role-now {
+  grid-column: 1/-1;
+  font-size: 8px;
+  margin: 0;
+}
+.journey-content .current-role h3 {
+  font-size: 30px;
+  letter-spacing: -0.04em;
+}
+.journey-content .current-role p {
+  font-size: 13px;
+}
+.journey-content .current-role > .role-date {
+  font-size: 8px;
+  max-width: 105px;
+}
+.journey-content .current-work-link {
+  font-size: 11px;
+  max-width: 260px;
+  gap: 15px;
+  line-height: 1.6;
+}
+.journey-content .experience-list li {
+  grid-template-columns: 20px 0.85fr 1.15fr;
+  gap: 16px;
+  padding-block: 25px;
+}
+.journey-content .experience-list h3 {
+  font-size: 23px;
+  letter-spacing: -0.04em;
+  line-height: 1.25;
+}
+.journey-content .experience-detail {
+  font-size: 11px;
+  line-height: 1.8;
+}
+.journey-content .experience-list .experience-summary {
+  font-size: 11px;
+  line-height: 1.85;
+}
+.journey-content .contact-section {
+  border-top: 1px solid var(--line);
+}
+.journey-content .contact-title h2 {
+  font-size: clamp(65px, 8.5vw, 130px);
+  line-height: 0.88;
+}
+.journey-content .mobile-break {
+  display: block;
+}
+.journey-content .contact-arrow {
+  font-size: 65px;
+  width: 65px;
+  height: 65px;
+}
+.journey-content .contact-links {
+  display: block;
+  margin-top: 35px;
+  padding-top: 25px;
+}
+.journey-content .contact-primary {
+  font-size: clamp(19px, 2.5vw, 34px);
+}
+.journey-content .social-links {
+  margin-top: 24px;
+  font-size: 11px;
+  gap: 30px;
+}
+.journey-content .social-links a {
+  gap: 18px;
+}
+@media (min-width: 1500px) {
+  .tree-stage {
+    height: min(54vh, 620px);
+  }
+}
+@media (min-width: 901px) and (max-height: 750px) {
+  .tree-stage {
+    height: 40vh;
+    min-height: 235px;
+  }
+  .tree-chapters {
+    margin-top: 14px;
+  }
+  .tree-hint {
+    display: none;
+  }
+}
+@media (max-width: 1100px) and (min-width: 701px) {
+  .journey {
+    grid-template-columns: 40% 60%;
+  }
+  .tree-rail {
+    padding-right: 24px;
+  }
+  .journey-content > section {
+    padding: 30px 25px 45px;
+  }
+  .journey-content h2 {
+    font-size: 4.8vw;
+  }
+  .tree-stage {
+    height: 360px;
+  }
+  .tree-controls {
+    gap: 10px;
+  }
+  .tree-chapters {
+    gap: 7px;
+  }
+  .tree-chapters a {
+    font-size: 8px;
+  }
+  .tree-coordinate {
+    font-size: 6px;
+  }
+  .journey-content .section-label > span {
+    max-width: 110px;
+  }
+  .journey-content .experience-list li {
+    grid-template-columns: 15px 1fr 1fr;
+    gap: 12px;
+  }
+  .journey-content .experience-list h3 {
+    font-size: 19px;
+  }
+  .journey-content .current-role h3 {
+    font-size: 24px;
+  }
+  .journey-content .current-work-link {
+    max-width: 185px;
+  }
+  .journey-content .current-role > .role-date {
+    max-width: 85px;
+    font-size: 7px;
+  }
+  .journey-content .contact-arrow {
+    font-size: 50px;
+    width: 50px;
+    height: 50px;
+  }
+}
+@media (max-width: 700px) {
+  :root {
+    scroll-padding-top: 124px;
+  }
+  .practice-hero {
+    padding-bottom: 0;
+  }
+  .practice-name {
+    white-space: normal;
+    font-size: 25.5vw;
+    max-width: 480px;
+    line-height: 0.84;
+    letter-spacing: -0.085em;
+    margin-top: 10px;
+  }
+  .practice-deck {
+    padding-top: 26px;
+    gap: 16px;
+    align-items: flex-end;
+  }
+  .practice-deck > p {
+    font-size: 24px;
+    max-width: 185px;
+    line-height: 1.2;
+  }
+  .practice-deck .arrow-link {
+    min-width: 0;
+    font-size: 10px;
+    gap: 18px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .mobile-tree-poster {
+    display: block;
+    width: min(100%, 480px);
+    height: 350px;
+    margin-inline: auto;
+    margin-top: 5px;
+  }
+  .journey {
+    display: block;
+    width: 100%;
+    border-top: 0;
+  }
+  .tree-rail {
+    position: sticky;
+    z-index: 15;
+    top: 0;
+    padding: 0;
+    background: var(--ink);
+    border-block: 1px solid var(--line);
+  }
+  .tree-studio {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    grid-template-rows: auto auto;
+    gap: 0 14px;
+    padding: 9px 20px 6px;
+    max-width: 600px;
+    margin-inline: auto;
+  }
+  .tree-heading,
+  .tree-orbit,
+  .tree-coordinate,
+  .tree-ground,
+  .tree-eyebrow,
+  .tree-chapters,
+  .tree-hint {
+    display: none;
+  }
+  .tree-art {
+    grid-column: 1;
+    grid-row: 1/3;
+    align-self: center;
+  }
+  .tree-stage {
+    width: 92px;
+    height: 108px;
+    min-height: 0;
+  }
+  .tree-caption {
+    padding: 8px 0 0;
+    align-self: end;
+  }
+  .tree-chapter {
+    font-size: 20px;
+    margin: 0;
+    line-height: 1.15;
+    max-width: 240px;
+  }
+  .tree-controls {
+    margin: 0;
+    gap: 12px;
+    min-height: 48px;
+  }
+  .tree-controls label {
+    font-size: 8px;
+  }
+  .tree-controls input {
+    height: 44px;
+  }
+  .tree-reset {
+    font-size: 9px;
+  }
+  .journey-content {
+    border: 0;
+  }
+  .journey-content > section {
+    padding: 38px 20px 48px;
+    scroll-margin-top: 0;
+  }
+  .journey-content .section-label {
+    font-size: 8px;
+    margin-bottom: 30px;
+  }
+  .journey-content .section-label > span {
+    font-size: 8px;
+  }
+  .journey-content h2,
+  .journey-content .about-section h2 {
+    font-size: clamp(43px, 11.4vw, 72px);
+  }
+  .journey-content .about-intro {
+    font-size: 23px;
+  }
+  .journey-content .about-body > div > p {
+    font-size: 14px;
+  }
+  .journey-content .toolkit dl {
+    gap: 25px 20px;
+  }
+  .journey-content .toolkit dd {
+    font-size: 10px;
+  }
+  .journey-content .work-row {
+    grid-template-columns: 29px 1fr;
+    gap: 0 14px;
+  }
+  .journey-content .work-number {
+    font-size: 24px;
+  }
+  .journey-content .work-title {
+    padding-right: 28px;
+  }
+  .journey-content .work-title h3 {
+    font-size: clamp(31px, 8.6vw, 49px);
+  }
+  .journey-content .work-title h3 > a {
+    max-width: none;
+  }
+  .journey-content .work-arrow {
+    right: -5px;
+    top: 29px;
+    width: 30px;
+    font-size: 25px;
+  }
+  .journey-content .experience-list li {
+    grid-template-columns: 20px 0.85fr 1.15fr;
+    gap: 12px;
+  }
+  .journey-content .experience-list h3 {
+    font-size: 20px;
+  }
+  .journey-content .current-role h3 {
+    font-size: 28px;
+  }
+  .journey-content .current-work-link {
+    max-width: 205px;
+  }
+  .journey-content .contact-title h2 {
+    font-size: 26vw;
+  }
+  .journey-content .contact-primary {
+    font-size: 6vw;
+  }
+  .journey-content .contact-arrow {
+    font-size: 58px;
+    width: 55px;
+    height: 55px;
+  }
+}
+@media (max-width: 370px) {
+  :root {
+    scroll-padding-top: 118px;
+  }
+  .practice-deck > p {
+    font-size: 22px;
+    min-width: 0;
+  }
+  .practice-deck .arrow-link {
+    font-size: 9px;
+    gap: 12px;
+  }
+  .tree-studio {
+    grid-template-columns: 75px 1fr;
+    padding-inline: 16px;
+    gap: 0 10px;
+  }
+  .tree-stage {
+    width: 75px;
+    height: 102px;
+  }
+  .tree-chapter {
+    font-size: 18px;
+  }
+  .tree-controls {
+    gap: 8px;
+  }
+  .journey-content > section {
+    padding-inline: 16px;
+  }
+  .journey-content .work-row {
+    grid-template-columns: 22px 1fr;
+    gap: 0 12px;
+  }
+  .journey-content .work-title h3 {
+    font-size: 8.6vw;
+  }
+  .journey-content .experience-list h3 {
+    font-size: 17px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tree-stage {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .tree-fallback,
+  .tree-canvas,
+  .mobile-tree-poster {
+    forced-color-adjust: none;
+  }
+  .tree-rail {
+    background: Canvas;
+  }
+}
