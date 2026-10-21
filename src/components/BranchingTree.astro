@@ -1,56 +1,30 @@
-<aside
-  class="tree-rail"
-  aria-label="A connected practice, mango seasons artwork"
->
-  <div class="tree-studio" data-chapter="about" data-season="evergreen">
-    <div class="tree-heading mono">
-      <span>Fig. 01 / Mangifera indica</span><span aria-hidden="true">↗</span>
+<div class="tree-backdrop">
+  <div
+    class="tree-studio"
+    data-chapter="about"
+    data-season="evergreen"
+    data-view="hero"
+  >
+    <div class="tree-stage" aria-hidden="true">
+      <img
+        class="tree-fallback"
+        src="/art/branching-tree.svg"
+        alt=""
+        width="600"
+        height="650"
+      />
+      <canvas class="tree-canvas" aria-hidden="true" hidden></canvas>
     </div>
-    <div class="tree-art">
-      <div class="tree-orbit" aria-hidden="true"></div>
-      <div
-        class="tree-stage"
-        role="img"
-        aria-label="An evergreen mango tree with sculpted bronze branches and long, drooping green leaves."
-      >
-        <img
-          class="tree-fallback"
-          src="/art/branching-tree.svg"
-          alt=""
-          width="600"
-          height="650"
-        />
-        <canvas class="tree-canvas" aria-hidden="true" hidden></canvas>
-      </div>
-      <span class="tree-ground" aria-hidden="true"></span>
-      <span class="tree-coordinate mono" aria-hidden="true"
-        >Rooted in curiosity.<br />Always branching out.</span
-      >
-    </div>
-    <div class="tree-caption">
-      <p class="tree-eyebrow mono">One tree. A changing season.</p>
-      <p class="tree-chapter">Start with <em>curiosity.</em></p>
-      <nav class="tree-chapters" aria-label="Page chapters">
-        <a href="#about" aria-current="location"
-          ><span class="mono">01</span><span>Approach</span></a
-        >
-        <a href="#work"><span class="mono">02</span><span>Work</span></a>
-        <a href="#experience"
-          ><span class="mono">03</span><span>Experience</span></a
-        >
-        <a href="#contact"><span class="mono">04</span><span>Connect</span></a>
-      </nav>
-    </div>
-    <div class="tree-season">
+    <div class="tree-scrim" aria-hidden="true"></div>
+    <div class="tree-season" aria-label="Mango lifecycle">
       <span class="tree-season-index mono">04</span><p>
         <span class="tree-season-name">Evergreen</span><span
           class="tree-season-note mono">A season of possibility</span
         >
-      </p><span class="tree-season-mark" aria-hidden="true">↘</span>
+      </p>
     </div>
-    <p class="tree-hint mono" hidden>Scroll to follow the seasons</p>
   </div>
-</aside>
+</div>
 
 <script>
   import {
@@ -71,15 +45,6 @@
         ".journey-content > section[id]",
       ),
     ];
-    const links = [
-      ...root.querySelectorAll<HTMLAnchorElement>(".tree-chapters a"),
-    ];
-    const titles: Record<string, [string, string]> = {
-      about: ["Start with ", "curiosity."],
-      work: ["Branch into ", "possibility."],
-      experience: ["Rooted in ", "experience."],
-      contact: ["Good things ", "grow together."],
-    };
     const seasons: Record<string, [string, string, string]> = {
       flush: ["01", "New growth", "Copper leaves, new beginnings"],
       bloom: ["02", "In blossom", "Small flowers, new possibilities"],
@@ -110,11 +75,6 @@
         : !ctx
           ? "A still view of the canopy"
           : note;
-      root.querySelector(".tree-hint")!.textContent = reduced.matches
-        ? "Still artwork · reduced motion"
-        : !ctx
-          ? "Static mango study"
-          : "Scroll to follow the seasons";
     };
     const paint = () => {
       frame = 0;
@@ -125,6 +85,11 @@
         Math.min(1, -position.top / Math.max(1, position.height - innerHeight)),
       );
       root.dataset.progress = progress.toFixed(4);
+      root.dataset.view = position.top > innerHeight * 0.3 ? "hero" : "reading";
+      root.style.setProperty(
+        "--tree-travel",
+        reduced.matches ? "0" : progress.toFixed(4),
+      );
       let current = chapters[0];
       for (const section of chapters)
         if (section.getBoundingClientRect().top < innerHeight * 0.45)
@@ -132,17 +97,6 @@
       if (current && chapter !== current.id) {
         chapter = current.id;
         root.dataset.chapter = chapter;
-        const [text, emphasis] = titles[chapter],
-          em = document.createElement("em");
-        em.textContent = emphasis;
-        root
-          .querySelector(".tree-chapter")!
-          .replaceChildren(document.createTextNode(text), em);
-        links.forEach((link) =>
-          link.hash === `#${chapter}`
-            ? link.setAttribute("aria-current", "location")
-            : link.removeAttribute("aria-current"),
-        );
       }
       const scene = mangoScene(progress);
       setSeason(reduced.matches || !ctx ? "evergreen" : scene.stage);
@@ -220,7 +174,15 @@
     };
     const resize = new ResizeObserver(() => {
       const rect = stage.getBoundingClientRect(),
-        nextDpr = Math.min(devicePixelRatio || 1, 1.5);
+        compact = matchMedia("(max-width: 700px)").matches,
+        maxEdge = compact ? 1000 : 1400,
+        maxArea = compact ? 650000 : 1200000,
+        nextDpr = Math.min(
+          devicePixelRatio || 1,
+          1.25,
+          maxEdge / Math.max(rect.width, rect.height),
+          Math.sqrt(maxArea / (rect.width * rect.height)),
+        );
       if (rect.width === width && rect.height === height && nextDpr === dpr)
         return;
       width = rect.width;
@@ -272,7 +234,6 @@
       window.removeEventListener("resize", onRestore);
       reduced.removeEventListener("change", onMotion);
     };
-    root.querySelector<HTMLElement>(".tree-hint")!.hidden = false;
     observe();
     window.addEventListener("pagehide", suspend);
     window.addEventListener("pageshow", (event) => {

@@ -8,7 +8,7 @@ import { projects, earlierExperience, toolkit } from "../data/portfolio";
 ---
 
 <Layout title="Robin Dalmy — Clarity from complexity" preloadDisplay>
-  <div id="top"></div><Navigation home />
+  <div id="top"></div><BranchingTree /><Navigation home />
   <main id="main">
     <section class="practice-hero frame" aria-labelledby="hero-title">
       <div class="hero-overline">
@@ -25,16 +25,8 @@ import { projects, earlierExperience, toolkit } from "../data/portfolio";
           href="#about">A little about me <span aria-hidden="true">↓</span></a
         >
       </div>
-      <img
-        class="mobile-tree-poster"
-        src="/art/branching-tree.svg"
-        width="600"
-        height="650"
-        alt="An evergreen mango tree with bronze branches and long, drooping green leaves"
-      />
     </section>
     <div class="journey frame">
-      <BranchingTree />
       <div class="journey-content">
         <section id="about" class="about-section" aria-labelledby="about-title">
           <div class="frame">
@@ -83,11 +75,7 @@ import { projects, earlierExperience, toolkit } from "../data/portfolio";
             </div>
           </div>
         </section>
-        <section
-          id="work"
-          class="work-section paper"
-          aria-labelledby="work-title"
-        >
+        <section id="work" class="work-section" aria-labelledby="work-title">
           <div class="frame">
             <div class="section-label mono">
               <p>02 / Selected engineering</p><span
@@ -164,7 +152,7 @@ import { projects, earlierExperience, toolkit } from "../data/portfolio";
         </section>
         <section
           id="experience"
-          class="experience-section paper"
+          class="experience-section"
           aria-labelledby="experience-title"
         >
           <div class="frame">
