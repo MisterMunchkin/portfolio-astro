@@ -70,12 +70,8 @@
   width: 100%;
   height: clamp(300px, 48vh, 560px);
   position: relative;
-  cursor: grab;
-  touch-action: pan-y pinch-zoom;
+  touch-action: auto;
   z-index: 2;
-}
-.tree-stage.is-dragging {
-  cursor: grabbing;
 }
 .tree-canvas,
 .tree-fallback {
@@ -164,35 +160,6 @@
 }
 .tree-chapters a:hover {
   color: var(--paper);
-}
-.tree-controls {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-top: 12px;
-}
-.tree-controls label {
-  font-size: 8px;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-.tree-controls input {
-  accent-color: var(--acid);
-  height: 44px;
-  min-width: 40px;
-  width: 100%;
-  cursor: ew-resize;
-}
-.tree-reset {
-  min-height: 44px;
-  font-size: 10px;
-  background: none;
-  color: var(--paper);
-  padding: 0 2px;
-  white-space: nowrap;
-}
-.tree-reset:hover {
-  color: var(--acid);
 }
 .tree-hint {
   color: var(--muted);
@@ -463,9 +430,6 @@
   .tree-stage {
     height: 360px;
   }
-  .tree-controls {
-    gap: 10px;
-  }
   .tree-chapters {
     gap: 7px;
   }
@@ -591,20 +555,6 @@
     line-height: 1.15;
     max-width: 240px;
   }
-  .tree-controls {
-    margin: 0;
-    gap: 12px;
-    min-height: 48px;
-  }
-  .tree-controls label {
-    font-size: 8px;
-  }
-  .tree-controls input {
-    height: 44px;
-  }
-  .tree-reset {
-    font-size: 9px;
-  }
   .journey-content {
     border: 0;
   }
@@ -706,9 +656,6 @@
   .tree-chapter {
     font-size: 18px;
   }
-  .tree-controls {
-    gap: 8px;
-  }
   .journey-content > section {
     padding-inline: 16px;
   }
@@ -736,5 +683,68 @@
   }
   .tree-rail {
     background: Canvas;
+  }
+}
+
+.tree-season {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding-block: 16px 9px;
+  margin-top: 10px;
+  border-top: 1px solid var(--line);
+}
+.tree-season-index {
+  color: var(--acid);
+  font-size: 9px;
+}
+.tree-season > p {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.tree-season-name {
+  font-size: 17px;
+  letter-spacing: -0.025em;
+}
+.tree-season-note {
+  color: var(--muted);
+  font-size: 7px;
+}
+.tree-season-mark {
+  margin-left: auto;
+  font-size: 24px;
+  color: var(--acid);
+}
+.tree-studio[data-season="bloom"] .tree-season-index,
+.tree-studio[data-season="bloom"] .tree-season-mark {
+  color: #f2dabb;
+}
+.tree-studio[data-season="fruit"] .tree-season-index,
+.tree-studio[data-season="fruit"] .tree-season-mark {
+  color: #f4b440;
+}
+@media (max-width: 700px) {
+  .tree-season {
+    grid-column: 2;
+    padding: 8px 0 6px;
+    margin: 0;
+    border: 0;
+    gap: 9px;
+    align-self: start;
+  }
+  .tree-season-name {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .tree-season-index {
+    font-size: 7px;
+  }
+  .tree-season-note,
+  .tree-season-mark {
+    display: none;
+  }
+  .tree-caption {
+    align-self: end;
   }
 }

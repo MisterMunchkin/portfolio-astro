@@ -1,16 +1,17 @@
-<aside class="tree-rail" aria-label="A connected practice, interactive artwork">
-  <div class="tree-studio" data-chapter="about">
+<aside
+  class="tree-rail"
+  aria-label="A connected practice, mango seasons artwork"
+>
+  <div class="tree-studio" data-chapter="about" data-season="evergreen">
     <div class="tree-heading mono">
-      <span>Fig. 01 / A connected practice</span><span aria-hidden="true"
-        >↗</span
-      >
+      <span>Fig. 01 / Mangifera indica</span><span aria-hidden="true">↗</span>
     </div>
     <div class="tree-art">
       <div class="tree-orbit" aria-hidden="true"></div>
       <div
         class="tree-stage"
         role="img"
-        aria-label="A sculptural tree with curved bronze branches and faceted olive-gold leaves. One rooted practice, many directions to grow."
+        aria-label="An evergreen mango tree with sculpted bronze branches and long, drooping green leaves."
       >
         <img
           class="tree-fallback"
@@ -27,7 +28,7 @@
       >
     </div>
     <div class="tree-caption">
-      <p class="tree-eyebrow mono">One practice. Many possibilities.</p>
+      <p class="tree-eyebrow mono">One tree. A changing season.</p>
       <p class="tree-chapter">Start with <em>curiosity.</em></p>
       <nav class="tree-chapters" aria-label="Page chapters">
         <a href="#about" aria-current="location"
@@ -40,32 +41,31 @@
         <a href="#contact"><span class="mono">04</span><span>Connect</span></a>
       </nav>
     </div>
-    <div class="tree-controls" hidden>
-      <label class="mono" for="tree-rotation">Rotation</label><input
-        id="tree-rotation"
-        type="range"
-        min="-180"
-        max="180"
-        value="-22"
-      /><button
-        type="button"
-        class="tree-reset"
-        aria-label="Reset tree rotation"
-        >Reset <span aria-hidden="true">↺</span></button
-      >
+    <div class="tree-season">
+      <span class="tree-season-index mono">04</span><p>
+        <span class="tree-season-name">Evergreen</span><span
+          class="tree-season-note mono">A season of possibility</span
+        >
+      </p><span class="tree-season-mark" aria-hidden="true">↘</span>
     </div>
-    <p class="tree-hint mono" hidden>Drag to explore · arrow keys to turn</p>
+    <p class="tree-hint mono" hidden>Scroll to follow the seasons</p>
   </div>
 </aside>
 
 <script>
-  import { createTree, projectTree } from "../utils/tree-geometry";
+  import {
+    createTree,
+    projectTree,
+    mangoFrames,
+    mangoScene,
+  } from "../utils/tree-geometry";
   const root = document.querySelector<HTMLElement>(".tree-studio");
   if (root) {
     const stage = root.querySelector<HTMLElement>(".tree-stage")!;
     const canvas = root.querySelector<HTMLCanvasElement>("canvas")!;
     const ctx = canvas.getContext("2d");
     const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    const journey = document.querySelector<HTMLElement>(".journey")!;
     const chapters = [
       ...document.querySelectorAll<HTMLElement>(
         ".journey-content > section[id]",
@@ -74,67 +74,57 @@
     const links = [
       ...root.querySelectorAll<HTMLAnchorElement>(".tree-chapters a"),
     ];
-    const titles: Record<string, string> = {
-      about: "Start with <em>curiosity.</em>",
-      work: "Branch into <em>possibility.</em>",
-      experience: "Rooted in <em>experience.</em>",
-      contact: "Good things <em>grow together.</em>",
+    const titles: Record<string, [string, string]> = {
+      about: ["Start with ", "curiosity."],
+      work: ["Branch into ", "possibility."],
+      experience: ["Rooted in ", "experience."],
+      contact: ["Good things ", "grow together."],
+    };
+    const seasons: Record<string, [string, string, string]> = {
+      flush: ["01", "New growth", "Copper leaves, new beginnings"],
+      bloom: ["02", "In blossom", "Small flowers, new possibilities"],
+      fruit: ["03", "Bearing fruit", "Green mangoes ripen to gold"],
+      evergreen: ["04", "Evergreen", "A pause before the next season"],
     };
     let chapter = "about",
-      scrollProgress = 0;
-    let frame = 0,
+      season = "",
+      frame = 0,
+      buildFrame = 0,
+      active = true,
       visible = true,
       width = 0,
       height = 0,
-      yaw = -0.38,
-      pitch = 0.07,
-      turn = 0;
-    let drag: {
-      x: number;
-      y: number;
-      yaw: number;
-      pitch: number;
-      id: number;
-      touch: boolean;
-      horizontal: boolean;
-    } | null = null;
-    const slider = root.querySelector<HTMLInputElement>("#tree-rotation")!;
-    const fullMesh = ctx ? createTree() : [];
-    const compactMesh = ctx ? createTree(2) : [];
-    const draw = () => {
+      dpr = 1,
+      version = 0;
+    let cache: HTMLCanvasElement[] = [];
+    let mesh: ReturnType<typeof createTree> | null = null;
+    const setSeason = (name: string) => {
+      if (season === name) return;
+      season = name;
+      root.dataset.season = name;
+      const [index, title, note] = seasons[name];
+      root.querySelector(".tree-season-index")!.textContent = index;
+      root.querySelector(".tree-season-name")!.textContent = title;
+      root.querySelector(".tree-season-note")!.textContent = reduced.matches
+        ? "A still view · reduced motion"
+        : !ctx
+          ? "A still view of the canopy"
+          : note;
+      root.querySelector(".tree-hint")!.textContent = reduced.matches
+        ? "Still artwork · reduced motion"
+        : !ctx
+          ? "Static mango study"
+          : "Scroll to follow the seasons";
+    };
+    const paint = () => {
       frame = 0;
-      if (!ctx || !visible || !width || !height) return;
-      ctx.clearRect(0, 0, width, height);
-      for (const face of projectTree(
-        width < 150 ? compactMesh : fullMesh,
-        width,
-        height,
-        yaw + (reduced.matches ? 0 : turn),
-        pitch,
-        scrollProgress,
-      )) {
-        ctx.beginPath();
-        face.points.forEach(([x, y], i) =>
-          i ? ctx.lineTo(x, y) : ctx.moveTo(x, y),
-        );
-        ctx.closePath();
-        ctx.fillStyle = face.fill;
-        ctx.strokeStyle = face.fill;
-        ctx.lineWidth = 0.35;
-        ctx.fill();
-        ctx.stroke();
-      }
-      root.dataset.yaw = yaw.toFixed(3);
-      root.dataset.scrollTurn = (reduced.matches ? 0 : turn).toFixed(3);
-      slider.value = String(Math.round((yaw * 180) / Math.PI));
-      slider.setAttribute("aria-valuetext", `${slider.value} degrees`);
-      canvas.hidden = false;
-      root.classList.add("tree-ready");
-    };
-    const requestDraw = () => {
-      if (!frame && ctx) frame = requestAnimationFrame(draw);
-    };
-    const onScroll = () => {
+      if (!active) return;
+      const position = journey.getBoundingClientRect();
+      const progress = Math.max(
+        0,
+        Math.min(1, -position.top / Math.max(1, position.height - innerHeight)),
+      );
+      root.dataset.progress = progress.toFixed(4);
       let current = chapters[0];
       for (const section of chapters)
         if (section.getBoundingClientRect().top < innerHeight * 0.45)
@@ -142,150 +132,153 @@
       if (current && chapter !== current.id) {
         chapter = current.id;
         root.dataset.chapter = chapter;
-        // These are fixed, local editorial labels, never retrieved content.
-        root.querySelector(".tree-chapter")!.innerHTML = titles[chapter];
+        const [text, emphasis] = titles[chapter],
+          em = document.createElement("em");
+        em.textContent = emphasis;
+        root
+          .querySelector(".tree-chapter")!
+          .replaceChildren(document.createTextNode(text), em);
         links.forEach((link) =>
           link.hash === `#${chapter}`
             ? link.setAttribute("aria-current", "location")
             : link.removeAttribute("aria-current"),
         );
       }
-      const journey = document.querySelector<HTMLElement>(".journey")!;
-      const rect = journey.getBoundingClientRect();
-      const progress = Math.max(
-        0,
-        Math.min(1, -rect.top / Math.max(1, rect.height - innerHeight)),
-      );
-      scrollProgress = progress;
-      const next = progress * 0.85;
-      if (Math.abs(next - turn) > 0.008) {
-        turn = next;
-        if (!reduced.matches) requestDraw();
+      const scene = mangoScene(progress);
+      setSeason(reduced.matches || !ctx ? "evergreen" : scene.stage);
+      if (
+        reduced.matches ||
+        !ctx ||
+        !visible ||
+        cache.length !== mangoFrames.length
+      )
+        return;
+      ctx.clearRect(0, 0, width, height);
+      const blend = scene.to === scene.from ? 0 : scene.blend;
+      ctx.globalCompositeOperation = "source-over";
+      ctx.globalAlpha = 1 - blend;
+      ctx.drawImage(cache[scene.from], 0, 0, width, height);
+      if (blend > 0) {
+        ctx.globalCompositeOperation = "lighter";
+        ctx.globalAlpha = blend;
+        ctx.drawImage(cache[scene.to], 0, 0, width, height);
       }
+      ctx.globalCompositeOperation = "source-over";
+      ctx.globalAlpha = 1;
+      canvas.hidden = false;
+      root.classList.add("tree-ready");
     };
-    const release = () => {
-      const id = drag?.id;
-      drag = null;
-      if (id !== undefined && stage.hasPointerCapture(id))
-        stage.releasePointerCapture(id);
-      stage.classList.remove("is-dragging");
+    const schedule = () => {
+      if (active && !frame) frame = requestAnimationFrame(paint);
     };
-    const reset = () => {
-      yaw = -0.38;
-      pitch = 0.07;
-      requestDraw();
-    };
-    const onMotion = () => {
-      release();
-      reset();
+    const rebuild = () => {
+      const token = ++version;
+      cancelAnimationFrame(buildFrame);
+      cache = [];
+      canvas.hidden = true;
+      root.classList.remove("tree-ready");
+      if (!ctx || reduced.matches || !width || !height || !visible || !active)
+        return;
+      mesh ??= createTree(3);
+      let index = 0;
+      const next = () => {
+        if (token !== version || !active || !visible || reduced.matches) return;
+        const buffer = document.createElement("canvas");
+        buffer.width = canvas.width;
+        buffer.height = canvas.height;
+        const brush = buffer.getContext("2d");
+        if (!brush) return;
+        brush.setTransform(dpr, 0, 0, dpr, 0, 0);
+        for (const face of projectTree(
+          mesh!,
+          width,
+          height,
+          -0.38,
+          0.07,
+          mangoFrames[index],
+        )) {
+          if (face.opacity < 0.002) continue;
+          brush.globalAlpha = face.opacity;
+          brush.beginPath();
+          face.points.forEach(([x, y], i) =>
+            i ? brush.lineTo(x, y) : brush.moveTo(x, y),
+          );
+          brush.closePath();
+          brush.fillStyle = face.fill;
+          brush.strokeStyle = face.fill;
+          brush.lineWidth = 0.35;
+          brush.fill();
+          brush.stroke();
+        }
+        cache.push(buffer);
+        index++;
+        if (index < mangoFrames.length)
+          buildFrame = requestAnimationFrame(next);
+        else schedule();
+      };
+      buildFrame = requestAnimationFrame(next);
     };
     const resize = new ResizeObserver(() => {
-      const rect = stage.getBoundingClientRect();
+      const rect = stage.getBoundingClientRect(),
+        nextDpr = Math.min(devicePixelRatio || 1, 1.5);
+      if (rect.width === width && rect.height === height && nextDpr === dpr)
+        return;
       width = rect.width;
       height = rect.height;
+      dpr = nextDpr;
       if (ctx) {
-        const dpr = Math.min(devicePixelRatio || 1, 1.5);
         canvas.width = Math.round(width * dpr);
         canvas.height = Math.round(height * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
-      onScroll();
-      requestDraw();
+      rebuild();
+      schedule();
     });
-    resize.observe(stage);
     const intersection = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
-      if (visible) requestDraw();
-      else {
-        cancelAnimationFrame(frame);
-        frame = 0;
+      if (visible) {
+        if (cache.length !== mangoFrames.length) rebuild();
+        schedule();
       }
     });
-    intersection.observe(stage);
-    if (ctx) {
-      stage.setAttribute("role", "group");
-      stage.tabIndex = 0;
-      stage.setAttribute(
-        "aria-label",
-        "Interactive 3D tree. Drag horizontally or use arrow keys to turn. Home resets. Vertical scrolling stays available.",
-      );
-      root
-        .querySelectorAll<HTMLElement>(".tree-controls,.tree-hint")
-        .forEach((e) => (e.hidden = false));
-      stage.addEventListener("pointerdown", (event) => {
-        if (event.pointerType === "mouse" && event.button !== 0) return;
-        drag = {
-          x: event.clientX,
-          y: event.clientY,
-          yaw,
-          pitch,
-          id: event.pointerId,
-          touch: event.pointerType === "touch",
-          horizontal: false,
-        };
-        stage.setPointerCapture(event.pointerId);
-        stage.classList.add("is-dragging");
-      });
-      stage.addEventListener("pointermove", (event) => {
-        if (!drag) return;
-        const dx = event.clientX - drag.x,
-          dy = event.clientY - drag.y;
-        if (drag.touch && !drag.horizontal) {
-          if (Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx)) return release();
-          if (Math.abs(dx) < 8) return;
-          drag.horizontal = true;
-        }
-        yaw = Math.max(-Math.PI, Math.min(Math.PI, drag.yaw + dx * 0.008));
-        pitch = Math.max(-0.35, Math.min(0.45, drag.pitch + dy * 0.002));
-        requestDraw();
-      });
-      stage.addEventListener("pointerup", release);
-      stage.addEventListener("pointercancel", release);
-      stage.addEventListener("lostpointercapture", release);
-      stage.addEventListener("keydown", (event) => {
-        if (
-          !["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home"].includes(
-            event.key,
-          )
-        )
-          return;
-        event.preventDefault();
-        if (event.key === "Home") return reset();
-        if (event.key === "ArrowLeft") yaw = Math.max(-Math.PI, yaw - 0.15);
-        if (event.key === "ArrowRight") yaw = Math.min(Math.PI, yaw + 0.15);
-        if (event.key === "ArrowUp") pitch = Math.max(-0.35, pitch - 0.05);
-        if (event.key === "ArrowDown") pitch = Math.min(0.45, pitch + 0.05);
-        requestDraw();
-      });
-      slider.addEventListener("input", () => {
-        yaw = (Number(slider.value) * Math.PI) / 180;
-        requestDraw();
-      });
-      root.querySelector(".tree-reset")!.addEventListener("click", reset);
-    }
-    window.addEventListener("scroll", onScroll, { passive: true });
-    reduced.addEventListener("change", onMotion);
-    onScroll();
-    window.addEventListener(
-      "pagehide",
-      () => {
-        release();
-        cancelAnimationFrame(frame);
-        resize.disconnect();
-        intersection.disconnect();
-        window.removeEventListener("scroll", onScroll);
-        reduced.removeEventListener("change", onMotion);
-      },
-      { once: true },
-    );
+    const onMotion = () => {
+      season = "";
+      rebuild();
+      schedule();
+    };
+    const onRestore = () => {
+      schedule();
+    };
+    const observe = () => {
+      active = true;
+      resize.observe(stage);
+      intersection.observe(stage);
+      window.addEventListener("scroll", schedule, { passive: true });
+      window.addEventListener("hashchange", onRestore);
+      window.addEventListener("resize", onRestore);
+      reduced.addEventListener("change", onMotion);
+      schedule();
+    };
+    const suspend = () => {
+      active = false;
+      version++;
+      cancelAnimationFrame(frame);
+      cancelAnimationFrame(buildFrame);
+      frame = 0;
+      resize.disconnect();
+      intersection.disconnect();
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("hashchange", onRestore);
+      window.removeEventListener("resize", onRestore);
+      reduced.removeEventListener("change", onMotion);
+    };
+    root.querySelector<HTMLElement>(".tree-hint")!.hidden = false;
+    observe();
+    window.addEventListener("pagehide", suspend);
     window.addEventListener("pageshow", (event) => {
       if (event.persisted) {
-        resize.observe(stage);
-        intersection.observe(stage);
-        window.addEventListener("scroll", onScroll, { passive: true });
-        reduced.addEventListener("change", onMotion);
-        onScroll();
-        requestDraw();
+        observe();
+        rebuild();
       }
     });
   }
