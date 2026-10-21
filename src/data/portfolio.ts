@@ -140,11 +140,12 @@ export const toolkit = [
   },
   {
     title: "Web & backend",
-    tools: "TypeScript · React · Next.js · Angular · .NET · PHP · Laravel Herd",
+    tools:
+      "TypeScript · React · Next.js · Angular · .NET · NestJS · PHP · Laravel · Laravel Herd",
   },
   {
     title: "Product & delivery",
-    tools: "Sentry · Amplitude · Intercom · Git · Azure",
+    tools: "Sentry · Amplitude · Intercom · Git · Azure · AWS",
   },
   {
     title: "Agent tooling",
