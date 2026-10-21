@@ -7,7 +7,7 @@ export const GET: APIRoute = () => {
     .filter((face) => face.opacity > 0.01)
     .map(
       (face) =>
-        `<path d="${face.points.map((p, i) => `${i ? "L" : "M"}${p.map((v) => v.toFixed(1)).join(",")}`).join(" ")}Z" fill="${face.fill}" stroke="${face.fill}"/>`,
+        `<path d="${face.points.map((p, i) => `${i ? "L" : "M"}${p.map((v) => v.toFixed(1)).join(",")}`).join(" ")}Z" fill="${face.fill}" stroke="${face.fill}" opacity="${face.opacity.toFixed(3)}"/>`,
     )
     .join("");
   return new Response(
