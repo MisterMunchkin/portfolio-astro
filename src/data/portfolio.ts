@@ -37,7 +37,7 @@ export const projects = [
     title: "Build the way you build.",
     subtitle: "Tools that make agent work more deliberate.",
     summary:
-      "Exploring agent harnesses, reusable skills, and human feedback loops with Codex and Claude.",
+      "Building agent orchestration, parallel development workflows, and mobile QA automation with Codex and Claude.",
     tags: ["Codex & Claude", "Harnesses", "MCP-style servers"],
     visual: "agents",
     context: "CareVicinity · Agentic engineering",
@@ -50,11 +50,16 @@ export const projects = [
       },
       {
         title: "Give the workflow reusable pieces",
-        text: "I work on harnesses, reusable skills, and orchestration so recurring development activities have a structure to build on. My custom workspace builds on BB.",
+        text: "I create agentic orchestration so development tasks can run in parallel in isolated Git worktrees, with reusable skills and shared context. My custom workspace builds on",
+        link: { label: "BB", href: "https://getbb.app/" },
       },
       {
         title: "Bring more people into the codebase",
         text: "Another area I work on is enabling designers to prototype directly from the mobile codebase. I’m interested in making the real product a more useful place to explore an idea.",
+      },
+      {
+        title: "Make verification part of the workflow",
+        text: "I build independent review and human checkpoints into agent workflows. I also drive mobile QA automation with tools such as agent-device, using schema-validated journeys and deterministic assertions.",
       },
     ],
     note: "Focus: development tooling, deliberate planning, and human feedback in agent-assisted workflows.",

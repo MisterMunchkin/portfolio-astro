@@ -57,7 +57,8 @@ const { project, next } = Astro.props;
                 <section id={`section-${i}`}>
                   <>
                     <h2>{section.title}</h2>
-                    <p>{section.text}</p>
+                    {/* prettier-ignore */}
+                    <p>{section.text}{"link" in section && section.link && <>{" "}<a class="case-reference" href={section.link.href}>{section.link.label}</a>.</>}</p>
                   </>
                 </section>
               ))
@@ -84,3 +85,10 @@ const { project, next } = Astro.props;
     </nav>
   </main><Footer />
 </Layout>
+
+<style>
+  .case-reference {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+</style>

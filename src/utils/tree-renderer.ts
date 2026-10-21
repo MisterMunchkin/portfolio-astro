@@ -41,7 +41,7 @@ void main(){
   float angle=sin(uTime*.65-phase*2.)*uWind*.025,c=cos(angle),s=sin(angle);
   local.xy=mat2(c,s,-s,c)*local.xy;n.xy=mat2(c,s,-s,c)*n.xy;
  }
- if(kind>.5&&kind<2.5){float flutter=sin(uTime*3.4+phase*6.)*uWind*.035*clamp(length(local)/.35,0.,1.);local.y+=flutter;local.z+=flutter*.45;n=normalize(n+vec3(0.,flutter*.2,flutter*.7));}
+ if(kind>.5&&kind<2.5){float flutter=sin(uTime*3.4+phase*6.)*uWind*.05*clamp(length(local)/.35,0.,1.);local.y+=flutter;local.z+=flutter*.45;n=normalize(n+vec3(0.,flutter*.2,flutter*.7));}
  vec3 position=aAnchor+local;float weight=pow(max(0.,position.y+.7),1.5);
  position.x+=weight*.018*uWind*(sin(uTime*.8)+.24*sin(uTime*1.7+position.z));position.z+=weight*.009*uWind*cos(uTime*.75);
  vec3 view=turn(position);float k=7./(7.-view.z);

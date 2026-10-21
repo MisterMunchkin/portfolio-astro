@@ -73,7 +73,6 @@
       season = "",
       frame = 0,
       buildFrame = 0,
-      wake = 0,
       active = true,
       visible = true,
       dirty = true,
@@ -82,17 +81,24 @@
       height = 0,
       dpr = 1,
       version = 0,
-      lastDraw = 0,
-      windStart = performance.now() + 3200;
+      lastDraw = 0;
     const lowPower = () => compact.matches || coarse.matches;
+    const windLimit = () => (lowPower() ? 0.85 : 1.35);
     let positionRead = false,
       scrollEnergy = 0,
-      lastScroll = 0;
+      lastScroll = 0,
+      sampleY = 0,
+      sampleTime = 0,
+      windLevel = 0,
+      windTime = 0,
+      windSuppressedUntil = location.hash ? performance.now() + 700 : 0;
     const stop = () => {
       cancelAnimationFrame(frame);
       frame = 0;
-      clearTimeout(wake);
-      wake = 0;
+    };
+    const resetWind = () => {
+      scrollEnergy = windLevel = windTime = lastScroll = 0;
+      positionRead = false;
     };
     const initialize = () => {
       if (initialized) return;
@@ -142,17 +148,26 @@
           : note;
     };
     const readPosition = (now: number) => {
-      const previous = progress;
       const position = journey.getBoundingClientRect();
       progress = Math.max(
         0,
         Math.min(1, -position.top / Math.max(1, position.height - innerHeight)),
       );
-      const delta = Math.abs(progress - previous);
-      if (positionRead && delta > 0.00001) {
-        scrollEnergy = Math.min(0.22, scrollEnergy * 0.4 + delta * 12);
+      const delta = Math.abs(scrollY - sampleY);
+      if (now < windSuppressedUntil) {
+        scrollEnergy = windLevel = 0;
+      } else if (positionRead && delta > 0.1) {
+        const elapsed = Math.max(16, Math.min(100, now - sampleTime)),
+          speed = (delta * 1000) / (elapsed * innerHeight);
+        // Discontinuous anchor/reload jumps update the season without a gale.
+        scrollEnergy =
+          delta > innerHeight * 0.9
+            ? 0
+            : windLimit() * (1 - Math.exp(-speed / 1.6));
         lastScroll = now;
       }
+      sampleY = scrollY;
+      sampleTime = now;
       positionRead = true;
       const p = progress.toFixed(4),
         view = position.top > innerHeight * 0.3 ? "hero" : "reading",
@@ -179,29 +194,20 @@
         !visible ||
         !active
       )
-        return { strength: 0, delay: 0, gust: false };
-      if (lowPower()) {
-        const elapsed = now - lastScroll,
-          t = Math.max(0, Math.min(1, (elapsed - 40) / 220));
-        return {
-          strength:
-            elapsed < 260 ? scrollEnergy * (1 - t * t * (3 - 2 * t)) : 0,
-          delay: 0,
-          gust: scrollEnergy > 0 && elapsed < 260,
-        };
-      }
-      const elapsed = now - windStart;
-      if (elapsed < 0) return { strength: 0, delay: -elapsed, gust: false };
-      const phase = elapsed % 18000,
-        gust = phase < 5000;
-      return {
-        strength: gust
-          ? Math.sin((phase / 5000) * Math.PI) ** 2 *
-            (compact.matches ? 0.5 : 0.8)
-          : 0,
-        delay: 18000 - phase,
-        gust,
-      };
+        return { strength: 0, gust: false };
+      const elapsed = Math.min(100, Math.max(0, now - windTime)),
+        target =
+          scrollEnergy *
+          Math.exp(-Math.max(0, now - lastScroll) / (lowPower() ? 110 : 170)),
+        response = 1 - Math.exp(-elapsed / (target > windLevel ? 65 : 150));
+      windLevel = Math.min(
+        windLimit(),
+        windLevel + (target - windLevel) * response,
+      );
+      windTime = now;
+      const gust = target > 0.004 || windLevel > 0.004;
+      if (!gust) windLevel = 0;
+      return { strength: windLevel, gust };
     };
     const paint = (now: number) => {
       frame = 0;
@@ -211,8 +217,6 @@
         frame = requestAnimationFrame(paint);
         return;
       }
-      clearTimeout(wake);
-      wake = 0;
       if (dirty) readPosition(now);
       const wind = windState(now);
       const scene = mangoScene(progress);
@@ -231,18 +235,8 @@
         lastDraw = now;
         canvas.hidden = false;
         root.classList.add("tree-ready");
-        root.dataset.wind = wind.gust
-          ? lowPower()
-            ? "response"
-            : "gust"
-          : lowPower()
-            ? "off"
-            : "rest";
+        root.dataset.wind = wind.gust ? "response" : "off";
         if (wind.gust) frame = requestAnimationFrame(paint);
-        else if (wind.delay > 0)
-          wake = window.setTimeout(() => {
-            frame = requestAnimationFrame(paint);
-          }, wind.delay);
       } else if (ctx && cache.length === mangoFrames.length) {
         ctx.clearRect(0, 0, width, height);
         const blend = scene.to === scene.from ? 0 : scene.blend;
@@ -377,14 +371,13 @@
         schedule();
       } else {
         stop();
+        resetWind();
         root.dataset.wind = "paused";
       }
     });
     const onMotion = () => {
       season = "";
-      scrollEnergy = 0;
-      positionRead = false;
-      windStart = performance.now() + 3200;
+      resetWind();
       stop();
       rebuild();
       schedule();
@@ -392,22 +385,26 @@
     const onVisibility = () => {
       if (document.hidden) {
         stop();
+        resetWind();
         cancelAnimationFrame(buildFrame);
         root.dataset.wind = "paused";
       } else {
-        windStart = performance.now() + 3200;
-        scrollEnergy = 0;
-        positionRead = false;
+        resetWind();
         rebuild();
         schedule();
       }
+    };
+    const onHashChange = () => {
+      resetWind();
+      windSuppressedUntil = performance.now() + 700;
+      schedule();
     };
     const observe = () => {
       active = true;
       resize.observe(stage);
       intersection.observe(stage);
       window.addEventListener("scroll", schedule, { passive: true });
-      window.addEventListener("hashchange", schedule);
+      window.addEventListener("hashchange", onHashChange);
       window.addEventListener("resize", schedule);
       document.addEventListener("visibilitychange", onVisibility);
       reduced.addEventListener("change", onMotion);
@@ -422,7 +419,7 @@
       resize.disconnect();
       intersection.disconnect();
       window.removeEventListener("scroll", schedule);
-      window.removeEventListener("hashchange", schedule);
+      window.removeEventListener("hashchange", onHashChange);
       window.removeEventListener("resize", schedule);
       document.removeEventListener("visibilitychange", onVisibility);
       reduced.removeEventListener("change", onMotion);
@@ -437,7 +434,7 @@
     window.addEventListener("pagehide", suspend);
     window.addEventListener("pageshow", (event) => {
       if (event.persisted) {
-        windStart = performance.now() + 3200;
+        resetWind();
         observe();
         rebuild();
       }

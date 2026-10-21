@@ -517,7 +517,7 @@ export function treePose(
     const flutter =
       Math.sin(time * 3.4 + phase * 6) *
       wind *
-      0.035 *
+      0.05 *
       clamp(Math.hypot(...local) / 0.35);
     local[1] += flutter;
     local[2] += flutter * 0.45;
