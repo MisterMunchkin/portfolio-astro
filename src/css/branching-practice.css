@@ -169,7 +169,8 @@ body {
   line-height: 1.02;
   letter-spacing: -0.065em;
 }
-.journey-content h2 em {
+.journey-content h2 em,
+.journey-content .about-intro em {
   color: var(--acid);
 }
 .journey-content .about-section {
@@ -238,6 +239,9 @@ body {
   border-top: 1px solid var(--line);
 }
 .journey-content .work-row {
+  --story-link-color: var(--paper);
+  --story-title-shift: 0px;
+  --story-arrow-turn: 0deg;
   grid-template-columns: 45px 1fr;
   gap: 0 22px;
   padding-block: 42px;
@@ -265,8 +269,9 @@ body {
   letter-spacing: -0.055em;
   line-height: 1.08;
 }
-.journey-content .work-title h3 > a:hover {
-  color: var(--acid);
+.journey-content .work-title h3 > a {
+  color: var(--story-link-color);
+  transform: translateX(var(--story-title-shift));
 }
 .journey-content .work-arrow {
   position: absolute;
@@ -277,10 +282,25 @@ body {
   margin: 0;
   border: 0;
   font-size: 30px;
+  color: var(--story-link-color);
+  transform: rotate(var(--story-arrow-turn));
 }
 .journey-content .work-arrow:hover {
-  color: var(--acid);
+  color: var(--story-link-color);
   background: transparent;
+  transform: rotate(var(--story-arrow-turn));
+}
+.journey-content .work-row:focus-within {
+  --story-link-color: var(--acid);
+  --story-title-shift: 6px;
+  --story-arrow-turn: 45deg;
+}
+@media (hover: hover) and (pointer: fine) {
+  .journey-content .work-row:hover {
+    --story-link-color: var(--acid);
+    --story-title-shift: 6px;
+    --story-arrow-turn: 45deg;
+  }
 }
 .journey-content .work-description {
   grid-column: 2;
@@ -298,11 +318,13 @@ body {
 }
 .journey-content .work-description .technology-list {
   margin-top: 20px;
-  font-size: 9px;
+  font-size: var(--story-detail-size);
   gap: 7px 13px;
 }
 .journey-content .work-description .arrow-link {
-  font-size: 12px;
+  font-size: var(--story-detail-size);
+  color: var(--story-link-color);
+  transition: color 0.25s;
   margin-top: 20px;
 }
 .journey-content .arrow-link:hover {
@@ -585,7 +607,7 @@ body {
     font-size: 14px;
   }
   .journey-content .work-description .technology-list {
-    font-size: 8px;
+    font-size: var(--story-detail-size);
   }
   .journey-content .experience-list li {
     grid-template-columns: 20px 0.85fr 1.15fr;
@@ -637,6 +659,17 @@ body {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .tree-ready .tree-fallback {
+    visibility: visible;
+  }
+  .tree-canvas {
+    display: none;
+  }
+  .journey-content .work-row,
+  .journey-content .work-row:is(:hover, :focus-within) {
+    --story-title-shift: 0px;
+    --story-arrow-turn: 0deg;
+  }
   .tree-stage {
     transform: translateX(-50%);
   }
