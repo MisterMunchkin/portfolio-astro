@@ -67,10 +67,65 @@ import { projects, earlierExperience, toolkit } from "../data/portfolio";
             </div>
           </div>
         </section>
+        <section
+          id="experience"
+          class="experience-section"
+          aria-labelledby="experience-title"
+        >
+          <div class="frame">
+            <div class="section-label mono">
+              <p>02 / Experience</p><a
+                href="/pdfs/Resume_03-02-2026.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Full résumé <span aria-hidden="true">↗</span><span
+                  class="sr-only"
+                >
+                  PDF, opens in a new tab</span
+                ></a
+              >
+            </div><h2 id="experience-title">
+              Built through<br /><em>experience.</em>
+            </h2><div class="current-role">
+              <span class="role-now mono"
+                >Now <span class="live-dot" aria-hidden="true"></span></span
+              ><div>
+                <h3>CareVicinity</h3><p>Software Engineer</p><a
+                  class="current-work-link"
+                  href="/work/agent-workflows/"
+                  >Agent harnesses, skills & orchestration <span
+                    aria-hidden="true">↗</span
+                  ></a
+                >
+              </div><p class="role-date mono">Nov 2025 — present</p>
+            </div><p class="previous-label mono">Previously</p><ol
+              class="experience-list"
+            >
+              {
+                earlierExperience.map((job, i) => (
+                  <li>
+                    <>
+                      <span class="experience-index mono" aria-hidden="true">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <h3>{job.company}</h3>
+                      <div>
+                        <span class="experience-detail">{job.detail}</span>
+                        {job.summary && (
+                          <p class="experience-summary">{job.summary}</p>
+                        )}
+                      </div>
+                    </>
+                  </li>
+                ))
+              }
+            </ol>
+          </div>
+        </section>
         <section id="work" class="work-section" aria-labelledby="work-title">
           <div class="frame">
             <div class="section-label mono">
-              <p>02 / Selected engineering</p><span
+              <p>03 / Selected engineering</p><span
                 >Three perspectives on the work</span
               >
             </div>
@@ -136,61 +191,6 @@ import { projects, earlierExperience, toolkit } from "../data/portfolio";
                         </div>
                       </>
                     </article>
-                  </li>
-                ))
-              }
-            </ol>
-          </div>
-        </section>
-        <section
-          id="experience"
-          class="experience-section"
-          aria-labelledby="experience-title"
-        >
-          <div class="frame">
-            <div class="section-label mono">
-              <p>03 / Experience</p><a
-                href="/pdfs/Resume_03-02-2026.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                >Full résumé <span aria-hidden="true">↗</span><span
-                  class="sr-only"
-                >
-                  PDF, opens in a new tab</span
-                ></a
-              >
-            </div><h2 id="experience-title">
-              Built through<br /><em>experience.</em>
-            </h2><div class="current-role">
-              <span class="role-now mono"
-                >Now <span class="live-dot" aria-hidden="true"></span></span
-              ><div>
-                <h3>CareVicinity</h3><p>Software Engineer</p><a
-                  class="current-work-link"
-                  href="/work/agent-workflows/"
-                  >Agent harnesses, skills & orchestration <span
-                    aria-hidden="true">↗</span
-                  ></a
-                >
-              </div><p class="role-date mono">Nov 2025 — present</p>
-            </div><p class="previous-label mono">Previously</p><ol
-              class="experience-list"
-            >
-              {
-                earlierExperience.map((job, i) => (
-                  <li>
-                    <>
-                      <span class="experience-index mono" aria-hidden="true">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <h3>{job.company}</h3>
-                      <div>
-                        <span class="experience-detail">{job.detail}</span>
-                        {job.summary && (
-                          <p class="experience-summary">{job.summary}</p>
-                        )}
-                      </div>
-                    </>
                   </li>
                 ))
               }
