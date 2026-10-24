@@ -1,16 +1,257 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import TopNavBar from "../components/top-nav-bar/TopNavBar";
-import HeroSection from "@components/sections/hero/HeroSection.astro";
-import WhoamiSection from "@components/sections/whoami/WhoamiSection.astro";
-import WorkExperienceSection from "@components/sections/work-experience/WorkExperienceSection.astro";
-import HitMeUpSection from "@components/sections/hit-me-up/HitMeUpSection.astro";
+import Navigation from "../components/Navigation.astro";
+import BranchingTree from "../components/BranchingTree.astro";
+import "../css/branching-practice.css";
+import Footer from "../components/Footer.astro";
+import { projects, earlierExperience, toolkit } from "../data/portfolio";
 ---
 
-<Layout title="Robin Dalmy" className="gap-10 flex flex-col">
-    <TopNavBar />
-    <HeroSection />
-    <WhoamiSection />
-    <WorkExperienceSection />
-    <HitMeUpSection />
+<Layout title="Robin Dalmy — Clarity from complexity" preloadDisplay>
+  <div id="top"></div><BranchingTree /><Navigation home />
+  <main id="main">
+    <section class="practice-hero frame" aria-labelledby="hero-title">
+      <div class="hero-overline">
+        <p class="mono">Mobile / Full-stack / Agentic engineering</p><p
+          class="mono"
+        >
+          <span class="live-dot" aria-hidden="true"></span> Currently at CareVicinity
+        </p>
+      </div>
+      <h1 id="hero-title" class="practice-name">ROBIN DALMY<span>.</span></h1>
+      <div class="practice-deck">
+        <p>Clarity from <em>complexity.</em></p><a
+          class="arrow-link"
+          href="#about">A little about me <span aria-hidden="true">↓</span></a
+        >
+      </div>
+    </section>
+    <div class="journey frame">
+      <div class="journey-content">
+        <section id="about" class="about-section" aria-labelledby="about-title">
+          <div class="frame">
+            <div class="section-label mono">
+              <p>01 / The approach</p><span>A connected practice</span>
+            </div><h2 id="about-title">
+              I follow problems<br />across the <em>stack.</em>
+            </h2><div class="about-body">
+              <p class="about-intro" style="text-wrap: balance;">
+                I’m <em>Robin</em>. I build software and the tools that help
+                people build it.
+              </p><div>
+                <a
+                  class="arrow-link"
+                  href="https://blog.robindalmy.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Notes from the work <span aria-hidden="true">↗</span><span
+                    class="sr-only"
+                  >
+                    blog, opens in a new tab</span
+                  ></a
+                >
+              </div>
+            </div><div class="toolkit">
+              <p class="mono">Working vocabulary</p><dl>
+                {
+                  toolkit.map((group) => (
+                    <div>
+                      <>
+                        <dt>{group.title}</dt>
+                        <dd>{group.tools}</dd>
+                      </>
+                    </div>
+                  ))
+                }
+              </dl>
+            </div>
+          </div>
+        </section>
+        <section
+          id="experience"
+          class="experience-section"
+          aria-labelledby="experience-title"
+        >
+          <div class="frame">
+            <div class="section-label mono">
+              <p>02 / Experience</p><a
+                href="/pdfs/Resume_03-02-2026.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Full résumé <span aria-hidden="true">↗</span><span
+                  class="sr-only"
+                >
+                  PDF, opens in a new tab</span
+                ></a
+              >
+            </div><h2 id="experience-title">
+              Built through<br /><em>experience.</em>
+            </h2><div class="current-role">
+              <span class="role-now mono"
+                >Now <span class="live-dot" aria-hidden="true"></span></span
+              ><div>
+                <h3>CareVicinity</h3><p>Software Engineer</p><a
+                  class="current-work-link"
+                  href="/work/agent-workflows/"
+                  >Agent harnesses, skills & orchestration <span
+                    aria-hidden="true">↗</span
+                  ></a
+                >
+              </div><p class="role-date mono">Nov 2025 — present</p>
+            </div><p class="previous-label mono">Previously</p><ol
+              class="experience-list"
+            >
+              {
+                earlierExperience.map((job, i) => (
+                  <li>
+                    <>
+                      <span class="experience-index mono" aria-hidden="true">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <h3>{job.company}</h3>
+                      <div>
+                        <span class="experience-detail">{job.detail}</span>
+                        {job.summary && (
+                          <p class="experience-summary">{job.summary}</p>
+                        )}
+                      </div>
+                    </>
+                  </li>
+                ))
+              }
+            </ol>
+          </div>
+        </section>
+        <section id="work" class="work-section" aria-labelledby="work-title">
+          <div class="frame">
+            <div class="section-label mono">
+              <p>03 / Selected engineering</p><span
+                >Three perspectives on the work</span
+              >
+            </div>
+            <div class="work-heading">
+              <h2 id="work-title">Beneath<br />the <em>surface.</em></h2><p>
+                The interface is only the beginning. A few stories about the
+                systems, decisions, and people behind it.
+              </p>
+            </div>
+            <ol class="work-index">
+              {
+                projects.map((project) => (
+                  <li>
+                    <article class={`work-row work-${project.visual}`}>
+                      <>
+                        <span class="work-number" aria-hidden="true">
+                          {project.number}
+                        </span>
+                        <div class="work-title">
+                          <>
+                            <p class="mono">{project.category}</p>
+                            <h3>
+                              <a href={`/work/${project.slug}/`}>
+                                {project.title}
+                                <span class="sr-only">
+                                  {" "}
+                                  — read the engineering story
+                                </span>
+                              </a>
+                            </h3>
+                            <a
+                              class="work-arrow"
+                              href={`/work/${project.slug}/`}
+                              aria-label={`Read ${project.title}`}
+                            >
+                              <span aria-hidden="true">↗</span>
+                            </a>
+                          </>
+                        </div>
+                        <div class="work-description">
+                          <>
+                            <p class="work-context mono">{project.context}</p>
+                            <p>{project.summary}</p>
+                            <ul
+                              class="technology-list"
+                              aria-label="Technologies"
+                            >
+                              {project.tags.map((tag) => (
+                                <li>{tag}</li>
+                              ))}
+                            </ul>
+                            <a
+                              class="arrow-link"
+                              href={`/work/${project.slug}/`}
+                            >
+                              Read the story{" "}
+                              <>
+                                <span aria-hidden="true">↗</span>
+                                <span class="sr-only">: {project.title}</span>
+                              </>
+                            </a>
+                          </>
+                        </div>
+                      </>
+                    </article>
+                  </li>
+                ))
+              }
+            </ol>
+          </div>
+        </section>
+        <section
+          id="contact"
+          class="contact-section"
+          aria-labelledby="contact-title"
+        >
+          <div class="frame">
+            <div class="section-label mono">
+              <p>04 / Keep the thread going</p><span
+                >Good work starts with a conversation</span
+              >
+            </div><div class="contact-title">
+              <h2 id="contact-title">
+                LET’S<br class="mobile-break" /> TALK<span>.</span>
+              </h2><a
+                class="contact-arrow"
+                href="https://www.linkedin.com/in/robin-dalmy1997"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Contact Robin Dalmy on LinkedIn, opens in a new tab"
+                ><span aria-hidden="true">↗</span></a
+              >
+            </div><div class="contact-links">
+              <a
+                class="contact-primary"
+                href="https://www.linkedin.com/in/robin-dalmy1997"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Connect on LinkedIn<span class="sr-only"
+                  >, opens in a new tab</span
+                ></a
+              ><div class="social-links">
+                <a
+                  href="https://github.com/MisterMunchkin"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >GitHub <span aria-hidden="true">↗</span><span
+                    class="sr-only"
+                  >
+                    opens in a new tab</span
+                  ></a
+                ><a
+                  href="https://www.linkedin.com/in/robin-dalmy1997"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >LinkedIn <span aria-hidden="true">↗</span><span
+                    class="sr-only"
+                  >
+                    opens in a new tab</span
+                  ></a
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main><Footer />
 </Layout>

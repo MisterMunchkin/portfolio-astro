@@ -7,73 +7,58 @@ import { cn } from "@utils/cn";
 import { Icon } from "astro-icon/components";
 
 const channels = [
-    {
-        icon: "github-icon",
-        url: "https://github.com/MisterMunchkin",
-    },
-    {
-        icon: "linkedin-icon",
-        url: "https://www.linkedin.com/in/robin-dalmy1997",
-    },
-    {
-        icon: "instagram-icon",
-        url: "https://www.instagram.com/robindalmy/",
-    },
-    {
-        icon: "email-icon",
-        url: "mailto:robindalmy@gmail.com",
-    },
+  {
+    icon: "github-icon",
+    url: "https://github.com/MisterMunchkin",
+  },
+  {
+    icon: "linkedin-icon",
+    url: "https://www.linkedin.com/in/robin-dalmy1997",
+  },
+  {
+    icon: "instagram-icon",
+    url: "https://www.instagram.com/robindalmy/",
+  },
 ];
 ---
 
 <section
-    id="hit-me-up"
-    class="px-3 md:px-10 w-full h-[700px] md:h-svh pb-10 relative"
+  id="hit-me-up"
+  class="px-3 md:px-10 w-full h-[700px] md:h-svh pb-10 relative"
 >
-    <h2 class="text-center">
-        <GradientText className="text-5xl mb-5 "> Hit Me Up! </GradientText>
-    </h2>
+  <h2 class="text-center">
+    <GradientText className="text-5xl mb-5 "> Hit Me Up! </GradientText>
+  </h2>
 
-    <div
-        class="max-w-xl bg-vivid-violet-950 px-8 rounded-lg shadow-xl pt-12 h-72 z-50 relative mx-auto"
-    >
-        <div class="absolute left-3 top-3 flex flex-row gap-2">
-            <div class="h-4 w-4 bg-[#00CA4E] rounded-full"></div>
-            <div class="h-4 w-4 bg-[#FFBD44] rounded-full"></div>
-            <div class="h-4 w-4 bg-[#FF605C] rounded-full"></div>
-        </div>
-        <TypeAnimation
-            className="font-mono text-lg text-star-dust-400"
-            sequence={[
-                "> Feel free to email or dm me through any of my channels 👇",
-            ]}
-            speed={40}
-            client:visible
-        />
-        <div class="absolute bottom-3">
-            <div class="flex flex-row gap-4 flex-1 justify-center flex-wrap">
-                {
-                    channels.map(({ icon, url }) => (
-                        <a
-                            href={url}
-                            target="_blank"
-                            aria-label={`Link to ${url}`}
-                        >
-                            <Icon
-                                name={`${icon}`}
-                                width={64}
-                                height={64}
-                                color={"white"}
-                            />
-                        </a>
-                    ))
-                }
-            </div>
-        </div>
+  <div
+    class="max-w-xl bg-vivid-violet-950 px-8 rounded-lg shadow-xl pt-12 h-72 z-50 relative mx-auto"
+  >
+    <div class="absolute left-3 top-3 flex flex-row gap-2">
+      <div class="h-4 w-4 bg-[#00CA4E] rounded-full"></div>
+      <div class="h-4 w-4 bg-[#FFBD44] rounded-full"></div>
+      <div class="h-4 w-4 bg-[#FF605C] rounded-full"></div>
     </div>
-    <Image
-        class={cn("absolute bottom-0 left-0 right-0 z-0")}
-        src={HeroLandscape}
-        alt={"Hero Landscape"}
+    <TypeAnimation
+      className="font-mono text-lg text-star-dust-400"
+      sequence={["> Feel free to get in touch through any of my channels 👇"]}
+      speed={40}
+      client:visible
     />
+    <div class="absolute bottom-3">
+      <div class="flex flex-row gap-4 flex-1 justify-center flex-wrap">
+        {
+          channels.map(({ icon, url }) => (
+            <a href={url} target="_blank" aria-label={`Link to ${url}`}>
+              <Icon name={`${icon}`} width={64} height={64} color={"white"} />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+  <Image
+    class={cn("absolute bottom-0 left-0 right-0 z-0")}
+    src={HeroLandscape}
+    alt={"Hero Landscape"}
+  />
 </section>

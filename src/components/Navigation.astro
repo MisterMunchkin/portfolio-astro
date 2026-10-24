@@ -1,0 +1,58 @@
+---
+const { home = false } = Astro.props;
+const base = home ? "" : "/";
+---
+
+<header class="site-header frame">
+  <a class="brand" href="/"
+    ><span class="brand-mark">r/d</span><span class="brand-text"
+      >Robin Dalmy<span>Software engineer</span></span
+    ><span class="sr-only"> home</span></a
+  >
+  <nav class="desktop-nav" aria-label="Main navigation">
+    <a href={`${base}#about`}>Approach</a><a href={`${base}#work`}
+      >Work <span class="mono">(03)</span></a
+    ><a href={`${base}#contact`}>Contact <span aria-hidden="true">↗</span></a>
+  </nav>
+  <a
+    class="resume-link"
+    href="/pdfs/Resume_03-02-2026.pdf"
+    target="_blank"
+    rel="noopener noreferrer"
+    >Résumé <span aria-hidden="true">↗</span><span class="sr-only">
+      PDF, opens in a new tab</span
+    ></a
+  >
+  <details class="mobile-nav">
+    <summary>Menu <span aria-hidden="true">+</span></summary><nav
+      aria-label="Mobile navigation"
+    >
+      <a href={`${base}#about`}>The approach <span class="mono">01</span></a><a
+        href={`${base}#experience`}>Experience <span class="mono">02</span></a
+      ><a href={`${base}#work`}>Selected work <span class="mono">03</span></a><a
+        href={`${base}#contact`}>Contact <span aria-hidden="true">↗</span></a
+      >
+    </nav>
+  </details>
+</header>
+<script>
+  document
+    .querySelectorAll<HTMLDetailsElement>(".mobile-nav")
+    .forEach((menu) => {
+      menu.querySelectorAll("a").forEach((link) =>
+        link.addEventListener("click", () => {
+          menu.open = false;
+        }),
+      );
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && menu.open) {
+          menu.open = false;
+          menu.querySelector("summary")?.focus();
+        }
+      });
+      document.addEventListener("click", (event) => {
+        if (event.target instanceof Node && !menu.contains(event.target))
+          menu.open = false;
+      });
+    });
+</script>

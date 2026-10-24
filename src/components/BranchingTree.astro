@@ -1,0 +1,443 @@
+<div class="tree-backdrop">
+  <div
+    class="tree-studio"
+    data-chapter="about"
+    data-season="evergreen"
+    data-view="hero"
+  >
+    <div class="tree-stage" aria-hidden="true">
+      <img
+        class="tree-fallback"
+        src="/art/branching-tree.svg"
+        alt=""
+        width="600"
+        height="650"
+      />
+      <canvas class="tree-canvas" aria-hidden="true" hidden></canvas>
+    </div>
+    <div class="tree-scrim" aria-hidden="true"></div>
+    <div class="tree-season" aria-label="Mango lifecycle">
+      <span class="tree-season-index mono">04</span><p>
+        <span class="tree-season-name">Evergreen</span><span
+          class="tree-season-note mono">A season of possibility</span
+        >
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .tree-canvas {
+    /* Soften raster edges without an expensive multisampled WebGL buffer. */
+    filter: blur(0.45px);
+  }
+</style>
+
+<script>
+  import {
+    createTree,
+    projectTree,
+    mangoFrames,
+    mangoScene,
+  } from "../utils/tree-geometry";
+  import {
+    createTreeRenderer,
+    type TreeRenderer,
+  } from "../utils/tree-renderer";
+  const root = document.querySelector<HTMLElement>(".tree-studio");
+  if (root) {
+    const stage = root.querySelector<HTMLElement>(".tree-stage")!;
+    let canvas = root.querySelector<HTMLCanvasElement>("canvas")!;
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)"),
+      compact = matchMedia("(max-width: 700px)"),
+      coarse = matchMedia("(pointer: coarse)");
+    const journey = document.querySelector<HTMLElement>(".journey")!,
+      chapters = [
+        ...document.querySelectorAll<HTMLElement>(
+          ".journey-content > section[id]",
+        ),
+      ];
+    const seasons: Record<string, [string, string, string]> = {
+      flush: ["01", "New growth", "Copper leaves, new beginnings"],
+      bloom: ["02", "In blossom", "Small flowers, new possibilities"],
+      fruit: ["03", "Bearing fruit", "Green mangoes ripen to gold"],
+      evergreen: ["04", "Evergreen", "A pause before the next season"],
+    };
+    let renderer: TreeRenderer | null = null,
+      ctx: CanvasRenderingContext2D | null = null,
+      initialized = false,
+      gpuDisabled = false;
+    let mesh: ReturnType<typeof createTree> | null = null,
+      cache: HTMLCanvasElement[] = [];
+    let chapter = "about",
+      season = "",
+      frame = 0,
+      buildFrame = 0,
+      active = true,
+      visible = true,
+      dirty = true,
+      progress = 0,
+      width = 0,
+      height = 0,
+      dpr = 1,
+      version = 0,
+      lastDraw = 0;
+    const lowPower = () => compact.matches || coarse.matches;
+    const windLimit = () => (lowPower() ? 0.85 : 1.35);
+    let positionRead = false,
+      scrollEnergy = 0,
+      lastScroll = 0,
+      sampleY = 0,
+      sampleTime = 0,
+      windLevel = 0,
+      windTime = 0,
+      windSuppressedUntil = location.hash ? performance.now() + 700 : 0;
+    const stop = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+    };
+    const resetWind = () => {
+      scrollEnergy = windLevel = windTime = lastScroll = 0;
+      positionRead = false;
+    };
+    const initialize = () => {
+      if (initialized) return;
+      initialized = true;
+      mesh ??= createTree(3);
+      renderer = gpuDisabled ? null : createTreeRenderer(canvas, mesh);
+      if (renderer) {
+        root.dataset.renderer = "webgl";
+        canvas.addEventListener(
+          "webglcontextlost",
+          (event) => {
+            event.preventDefault();
+            renderer?.dispose();
+            renderer = null;
+            gpuDisabled = true;
+            initialized = false;
+            stop();
+            rebuild();
+            schedule();
+          },
+          { once: true },
+        );
+      } else {
+        // A failed GPU context cannot become a 2D context on the same canvas.
+        const next = canvas.cloneNode() as HTMLCanvasElement;
+        canvas.replaceWith(next);
+        canvas = next;
+        try {
+          ctx = canvas.getContext("2d");
+        } catch {
+          ctx = null;
+        }
+        root.dataset.renderer = ctx ? "canvas" : "static";
+      }
+    };
+    const setSeason = (name: string) => {
+      if (season === name) return;
+      season = name;
+      root.dataset.season = name;
+      const [index, title, note] = seasons[name];
+      root.querySelector(".tree-season-index")!.textContent = index;
+      root.querySelector(".tree-season-name")!.textContent = title;
+      root.querySelector(".tree-season-note")!.textContent = reduced.matches
+        ? "A still view · reduced motion"
+        : !renderer && !ctx
+          ? "A still view of the canopy"
+          : note;
+    };
+    const readPosition = (now: number) => {
+      const position = journey.getBoundingClientRect();
+      progress = Math.max(
+        0,
+        Math.min(1, -position.top / Math.max(1, position.height - innerHeight)),
+      );
+      const delta = Math.abs(scrollY - sampleY);
+      if (now < windSuppressedUntil) {
+        scrollEnergy = windLevel = 0;
+      } else if (positionRead && delta > 0.1) {
+        const elapsed = Math.max(16, Math.min(100, now - sampleTime)),
+          speed = (delta * 1000) / (elapsed * innerHeight);
+        // Discontinuous anchor/reload jumps update the season without a gale.
+        scrollEnergy =
+          delta > innerHeight * 0.9
+            ? 0
+            : windLimit() * (1 - Math.exp(-speed / 1.6));
+        lastScroll = now;
+      }
+      sampleY = scrollY;
+      sampleTime = now;
+      positionRead = true;
+      const p = progress.toFixed(4),
+        view = position.top > innerHeight * 0.3 ? "hero" : "reading",
+        travel = reduced.matches ? "0" : p;
+      if (root.dataset.progress !== p) root.dataset.progress = p;
+      if (root.dataset.view !== view) root.dataset.view = view;
+      if (root.style.getPropertyValue("--tree-travel") !== travel)
+        root.style.setProperty("--tree-travel", travel);
+      let current = chapters[0];
+      for (const section of chapters)
+        if (section.getBoundingClientRect().top < innerHeight * 0.45)
+          current = section;
+      if (current && chapter !== current.id) {
+        chapter = current.id;
+        root.dataset.chapter = chapter;
+      }
+      dirty = false;
+    };
+    const windState = (now: number) => {
+      if (
+        !renderer ||
+        reduced.matches ||
+        document.hidden ||
+        !visible ||
+        !active
+      )
+        return { strength: 0, gust: false };
+      const elapsed = Math.min(100, Math.max(0, now - windTime)),
+        target =
+          scrollEnergy *
+          Math.exp(-Math.max(0, now - lastScroll) / (lowPower() ? 110 : 170)),
+        response = 1 - Math.exp(-elapsed / (target > windLevel ? 65 : 150));
+      windLevel = Math.min(
+        windLimit(),
+        windLevel + (target - windLevel) * response,
+      );
+      windTime = now;
+      const gust = target > 0.004 || windLevel > 0.004;
+      if (!gust) windLevel = 0;
+      return { strength: windLevel, gust };
+    };
+    const paint = (now: number) => {
+      frame = 0;
+      if (!active || document.hidden) return;
+      const interval = 50;
+      if (renderer && !reduced.matches && now - lastDraw < interval - 1) {
+        frame = requestAnimationFrame(paint);
+        return;
+      }
+      if (dirty) readPosition(now);
+      const wind = windState(now);
+      const scene = mangoScene(progress);
+      setSeason(
+        reduced.matches || (!renderer && !ctx) ? "evergreen" : scene.stage,
+      );
+      if (reduced.matches || !visible) {
+        root.dataset.wind = "off";
+        return;
+      }
+      if (renderer) {
+        const life =
+          mangoFrames[scene.from] +
+          (mangoFrames[scene.to] - mangoFrames[scene.from]) * scene.blend;
+        renderer.draw(life, now / 1000, wind.strength);
+        lastDraw = now;
+        canvas.hidden = false;
+        root.classList.add("tree-ready");
+        root.dataset.wind = wind.gust ? "response" : "off";
+        if (wind.gust) frame = requestAnimationFrame(paint);
+      } else if (ctx && cache.length === mangoFrames.length) {
+        ctx.clearRect(0, 0, width, height);
+        const blend = scene.to === scene.from ? 0 : scene.blend;
+        ctx.globalCompositeOperation = "source-over";
+        ctx.globalAlpha = 1 - blend;
+        ctx.drawImage(cache[scene.from], 0, 0, width, height);
+        if (blend > 0) {
+          ctx.globalCompositeOperation = "lighter";
+          ctx.globalAlpha = blend;
+          ctx.drawImage(cache[scene.to], 0, 0, width, height);
+        }
+        ctx.globalCompositeOperation = "source-over";
+        ctx.globalAlpha = 1;
+        canvas.hidden = false;
+        root.classList.add("tree-ready");
+        root.dataset.wind = "off";
+      }
+    };
+    const schedule = () => {
+      dirty = true;
+      if (active && !document.hidden && !frame)
+        frame = requestAnimationFrame(paint);
+    };
+    const rebuild = () => {
+      const token = ++version;
+      cancelAnimationFrame(buildFrame);
+      cache = [];
+      canvas.hidden = true;
+      root.classList.remove("tree-ready");
+      if (
+        reduced.matches ||
+        !width ||
+        !height ||
+        !visible ||
+        !active ||
+        document.hidden
+      )
+        return;
+      initialize();
+      const area = renderer
+        ? lowPower()
+          ? 300000
+          : 750000
+        : (lowPower() ? 3250000 : 6000000) / mangoFrames.length;
+      dpr = Math.min(
+        devicePixelRatio || 1,
+        1.25,
+        (lowPower() ? 1000 : 1400) / Math.max(width, height),
+        Math.sqrt(area / (width * height)),
+      );
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      if (renderer) {
+        renderer.resize(width, height);
+        schedule();
+        return;
+      }
+      if (!ctx) return;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      let index = 0;
+      const next = () => {
+        if (
+          token !== version ||
+          !active ||
+          !visible ||
+          document.hidden ||
+          reduced.matches
+        )
+          return;
+        const buffer = document.createElement("canvas");
+        buffer.width = canvas.width;
+        buffer.height = canvas.height;
+        const brush = buffer.getContext("2d");
+        if (!brush) return;
+        brush.setTransform(dpr, 0, 0, dpr, 0, 0);
+        for (const face of projectTree(
+          mesh!,
+          width,
+          height,
+          -0.38,
+          0.07,
+          mangoFrames[index],
+        )) {
+          if (face.opacity < 0.002) continue;
+          brush.globalAlpha = face.opacity;
+          brush.beginPath();
+          face.points.forEach(([x, y], i) =>
+            i ? brush.lineTo(x, y) : brush.moveTo(x, y),
+          );
+          brush.closePath();
+          brush.fillStyle = face.fill;
+          brush.strokeStyle = face.fill;
+          brush.lineWidth = 0.35;
+          brush.fill();
+          brush.stroke();
+        }
+        cache.push(buffer);
+        index++;
+        if (index < mangoFrames.length)
+          buildFrame = requestAnimationFrame(next);
+        else schedule();
+      };
+      buildFrame = requestAnimationFrame(next);
+    };
+    const resize = new ResizeObserver(() => {
+      const rect = stage.getBoundingClientRect(),
+        maxEdge = lowPower() ? 1000 : 1400;
+      // Bound total fallback-cache memory as its number of development poses grows.
+      const area = renderer
+        ? lowPower()
+          ? 300000
+          : 750000
+        : (lowPower() ? 3250000 : 6000000) / mangoFrames.length;
+      const nextDpr = Math.min(
+        devicePixelRatio || 1,
+        1.25,
+        maxEdge / Math.max(rect.width, rect.height),
+        Math.sqrt(area / (rect.width * rect.height)),
+      );
+      if (rect.width === width && rect.height === height && nextDpr === dpr)
+        return;
+      width = rect.width;
+      height = rect.height;
+      dpr = nextDpr;
+      rebuild();
+      schedule();
+    });
+    const intersection = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) {
+        if (!renderer && cache.length !== mangoFrames.length) rebuild();
+        schedule();
+      } else {
+        stop();
+        resetWind();
+        root.dataset.wind = "paused";
+      }
+    });
+    const onMotion = () => {
+      season = "";
+      resetWind();
+      stop();
+      rebuild();
+      schedule();
+    };
+    const onVisibility = () => {
+      if (document.hidden) {
+        stop();
+        resetWind();
+        cancelAnimationFrame(buildFrame);
+        root.dataset.wind = "paused";
+      } else {
+        resetWind();
+        rebuild();
+        schedule();
+      }
+    };
+    const onHashChange = () => {
+      resetWind();
+      windSuppressedUntil = performance.now() + 700;
+      schedule();
+    };
+    const observe = () => {
+      active = true;
+      resize.observe(stage);
+      intersection.observe(stage);
+      window.addEventListener("scroll", schedule, { passive: true });
+      window.addEventListener("hashchange", onHashChange);
+      window.addEventListener("resize", schedule);
+      document.addEventListener("visibilitychange", onVisibility);
+      reduced.addEventListener("change", onMotion);
+      coarse.addEventListener("change", onMotion);
+      schedule();
+    };
+    const suspend = () => {
+      active = false;
+      version++;
+      stop();
+      cancelAnimationFrame(buildFrame);
+      resize.disconnect();
+      intersection.disconnect();
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("hashchange", onHashChange);
+      window.removeEventListener("resize", schedule);
+      document.removeEventListener("visibilitychange", onVisibility);
+      reduced.removeEventListener("change", onMotion);
+      coarse.removeEventListener("change", onMotion);
+      renderer?.dispose();
+      renderer = null;
+      initialized = false;
+      ctx = null;
+      cache = [];
+    };
+    observe();
+    window.addEventListener("pagehide", suspend);
+    window.addEventListener("pageshow", (event) => {
+      if (event.persisted) {
+        resetWind();
+        observe();
+        rebuild();
+      }
+    });
+  }
+</script>

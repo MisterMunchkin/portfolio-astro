@@ -1,54 +1,41 @@
-# Astro Starter Kit: Basics
+# Robin Dalmy — Clarity from complexity
+
+A static Astro portfolio connecting mobile engineering, full-stack work, production troubleshooting, and agentic development tooling.
+
+## Run locally
+
+Requires Node.js 20 or newer. The existing dependency manifest and lockfile are unchanged.
 
 ```sh
-npm create astro@latest -- --template basics
+npm ci
+npm run dev
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+```sh
+npm run build     # Astro source/type/content checks and static production build
+npm run preview   # Serve dist/ locally
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+For a sandbox without writable home directories:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+```sh
+npm ci --cache /tmp/portfolio-npm-cache
+ASTRO_TELEMETRY_DISABLED=1 XDG_CONFIG_HOME=/tmp/portfolio-config npm run build
+```
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Design and structure
 
-## 🧞 Commands
+The visual idea is a continuous signal: an original three-dimensional surface that can be explored as a mobile loop, a system knot, or an agent waveform. It sits in a typographic identity composition. The work is presented as a numbered engineering index; story pages use conceptual diagrams and a section index.
 
-All commands are run from the root of the project, from a terminal:
+- `src/pages/index.astro`: homepage and public content structure.
+- `src/pages/work/[slug].astro`: three static engineering stories.
+- `src/components/SignalForm.astro`: progressively enhanced 3D artwork and controls.
+- `src/utils/signal-geometry.ts`: original parametric surface geometry, projection, and shading shared by server SVG and client canvas.
+- `src/components/ConceptDiagram.astro`: semantic story diagrams.
+- `src/data/portfolio.ts`: public summaries, experience, and toolkit.
+- `src/css/portfolio.css`: visual system and responsive composition.
+- `public/pdfs/Resume_03-02-2026.pdf`: resume download; email contact details are omitted from the website copies.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+There are no new production dependencies, remote font loaders, component services, runtime CDNs, or analytics. Existing fonts are self-hosted. Canvas uses event-driven rendering rather than an idle animation loop; offscreen rendering stops, pixel density is capped, and observers are cleaned up/restored around page lifecycle events. Reduced motion removes entrances and ambient pointer response while deliberate controls remain available.
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Without JavaScript or a canvas context, the shared geometry remains visible as a server-rendered SVG. Content, links, and the native mobile menu remain available.

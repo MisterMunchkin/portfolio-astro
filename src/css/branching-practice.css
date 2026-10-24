@@ -1,0 +1,681 @@
+/* The tree belongs to the page, while all reading and navigation stay in the DOM. */
+body {
+  isolation: isolate;
+}
+#main,
+.site-header,
+.site-footer {
+  position: relative;
+  z-index: 2;
+}
+.site-header {
+  z-index: 20;
+}
+.tree-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.tree-backdrop * {
+  pointer-events: none;
+}
+.tree-studio {
+  position: absolute;
+  inset: 0;
+  --tree-travel: 0;
+}
+.tree-stage {
+  position: absolute;
+  width: min(140vw, 2100px);
+  height: 120svh;
+  left: 80%;
+  top: -12svh;
+  transform: translate3d(
+    calc(-50% - var(--tree-travel) * 3vw),
+    calc(var(--tree-travel) * -3svh),
+    0
+  );
+}
+.tree-canvas,
+.tree-fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.tree-ready .tree-fallback {
+  visibility: hidden;
+}
+.tree-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      #11130ff5 0%,
+      #11130f00 22%,
+      #11130f00 80%,
+      #11130f80 100%
+    ),
+    linear-gradient(
+      90deg,
+      #11130ffc 0%,
+      #11130ff5 30%,
+      #11130fed 62%,
+      #11130f6b 75%,
+      #11130f33 100%
+    );
+}
+.tree-season {
+  position: absolute;
+  bottom: 38px;
+  right: 48px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  color: var(--paper);
+}
+.tree-season-index {
+  color: var(--acid);
+  font-size: 10px;
+}
+.tree-season > p {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.tree-season-name {
+  font-size: 17px;
+  letter-spacing: -0.025em;
+}
+.tree-season-note {
+  color: var(--muted);
+  font-size: 7px;
+}
+.tree-studio[data-season="bloom"] .tree-season-index {
+  color: #f2dabb;
+}
+.tree-studio[data-season="fruit"] .tree-season-index {
+  color: #f4b440;
+}
+.practice-hero {
+  min-height: calc(100svh - 100px);
+  padding-bottom: 80px;
+}
+.practice-name {
+  font-size: clamp(78px, 12.15vw, 190px);
+  font-weight: 900;
+  letter-spacing: -0.082em;
+  line-height: 1.03;
+  white-space: nowrap;
+  margin-left: -0.007em;
+}
+.practice-name > span {
+  color: var(--acid);
+}
+.practice-deck {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 26px;
+  gap: 30px;
+}
+.practice-deck > p {
+  font-size: clamp(27px, 2.8vw, 43px);
+  letter-spacing: -0.04em;
+  line-height: 1.25;
+}
+.practice-deck em {
+  color: var(--acid);
+}
+.practice-deck .arrow-link {
+  min-width: 200px;
+}
+.practice-deck .arrow-link:hover {
+  color: var(--acid);
+}
+.journey {
+  display: block;
+  position: relative;
+  border: 0;
+}
+.journey-content {
+  min-width: 0;
+}
+.journey-content > section {
+  width: min(64%, 850px);
+  padding: 100px 0 120px;
+  scroll-margin-top: 32px;
+}
+.journey-content > section > .frame {
+  width: 100%;
+  margin: 0;
+}
+.journey-content .section-label {
+  margin-bottom: 42px;
+  gap: 25px;
+  font-size: 9px;
+  padding-bottom: 20px;
+}
+.journey-content .section-label > span {
+  font-size: 8px;
+  text-align: right;
+}
+.journey-content h2 {
+  font-size: clamp(55px, 6.8vw, 104px);
+  line-height: 1.02;
+  letter-spacing: -0.065em;
+}
+.journey-content h2 em,
+.journey-content .about-intro em {
+  color: var(--acid);
+}
+.journey-content .about-section {
+  background: transparent;
+}
+.journey-content .about-section h2 {
+  margin-bottom: 42px;
+}
+.journey-content .about-body {
+  display: block;
+  margin: 0;
+}
+.journey-content .about-intro {
+  font-size: clamp(25px, 2.5vw, 37px);
+  line-height: 1.4;
+  max-width: 740px;
+  letter-spacing: -0.035em;
+}
+.journey-content .about-body > div {
+  margin-top: 30px;
+  max-width: 570px;
+}
+.journey-content .about-body > div > p {
+  font-size: 16px;
+  line-height: 1.85;
+  margin-top: 20px;
+}
+.journey-content .about-body .arrow-link {
+  margin-top: 22px;
+  font-size: 12px;
+}
+.journey-content .about-body .arrow-link:hover {
+  color: var(--acid);
+}
+.journey-content .toolkit {
+  display: block;
+  margin-top: 56px;
+  padding-top: 26px;
+}
+.journey-content .toolkit > .mono {
+  margin-bottom: 26px;
+  font-size: 9px;
+}
+.journey-content .toolkit dl {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px 30px;
+}
+.journey-content .toolkit dt {
+  font-size: 13px;
+}
+.journey-content .toolkit dd {
+  font-size: 12px;
+  line-height: 1.85;
+}
+.journey-content .work-heading {
+  display: block;
+  margin-bottom: 48px;
+}
+.journey-content .work-heading > p {
+  font-size: 16px;
+  margin-top: 28px;
+  max-width: 460px;
+  line-height: 1.8;
+}
+.journey-content .work-index {
+  border-top: 1px solid var(--line);
+}
+.journey-content .work-row {
+  --story-link-color: var(--paper);
+  --story-title-shift: 0px;
+  --story-arrow-turn: 0deg;
+  grid-template-columns: 45px 1fr;
+  gap: 0 22px;
+  padding-block: 42px;
+}
+.journey-content .work-number {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: 30px;
+  padding-top: 32px;
+  letter-spacing: -1.5px;
+  color: var(--acid);
+}
+.journey-content .work-title {
+  grid-column: 2;
+  padding-right: 48px;
+}
+.journey-content .work-title > p {
+  font-size: 9px;
+  min-height: 0;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+.journey-content .work-title h3 {
+  font-size: clamp(34px, 4vw, 59px);
+  letter-spacing: -0.055em;
+  line-height: 1.08;
+}
+.journey-content .work-title h3 > a {
+  color: var(--story-link-color);
+  transform: translateX(var(--story-title-shift));
+}
+.journey-content .work-arrow {
+  position: absolute;
+  width: 40px;
+  height: 44px;
+  top: 34px;
+  right: 0;
+  margin: 0;
+  border: 0;
+  font-size: 30px;
+  color: var(--story-link-color);
+  transform: rotate(var(--story-arrow-turn));
+}
+.journey-content .work-arrow:hover {
+  color: var(--story-link-color);
+  background: transparent;
+  transform: rotate(var(--story-arrow-turn));
+}
+.journey-content .work-row:focus-within {
+  --story-link-color: var(--acid);
+  --story-title-shift: 6px;
+  --story-arrow-turn: 45deg;
+}
+@media (hover: hover) and (pointer: fine) {
+  .journey-content .work-row:hover {
+    --story-link-color: var(--acid);
+    --story-title-shift: 6px;
+    --story-arrow-turn: 45deg;
+  }
+}
+.journey-content .work-description {
+  grid-column: 2;
+  margin-top: 24px;
+}
+.journey-content .work-context {
+  min-height: 0;
+  font-size: 9px;
+}
+.journey-content .work-description > p:not(.mono) {
+  font-size: 16px;
+  line-height: 1.85;
+  margin-top: 14px;
+  max-width: none;
+}
+.journey-content .work-description .technology-list {
+  margin-top: 20px;
+  font-size: var(--story-detail-size);
+  gap: 7px 13px;
+}
+.journey-content .work-description .arrow-link {
+  font-size: var(--story-detail-size);
+  color: var(--story-link-color);
+  transition: color 0.25s;
+  margin-top: 20px;
+}
+.journey-content .arrow-link:hover {
+  color: var(--acid);
+}
+.journey-content .experience-section h2 {
+  margin-bottom: 45px;
+}
+.journey-content .current-role {
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  padding-block: 32px;
+}
+.journey-content .role-now {
+  grid-column: 1/-1;
+  font-size: 9px;
+  margin: 0;
+}
+.journey-content .current-role .live-dot {
+  background: var(--acid);
+}
+.journey-content .current-role h3 {
+  font-size: 36px;
+  letter-spacing: -0.04em;
+}
+.journey-content .current-role p {
+  font-size: 15px;
+}
+.journey-content .current-role > .role-date {
+  font-size: 9px;
+  max-width: 120px;
+}
+.journey-content .current-work-link {
+  font-size: 12px;
+  max-width: 300px;
+  gap: 16px;
+  line-height: 1.6;
+}
+.journey-content .current-work-link:hover {
+  color: var(--acid);
+}
+.journey-content .experience-list li {
+  grid-template-columns: 24px 0.85fr 1.15fr;
+  gap: 20px;
+  padding-block: 30px;
+}
+.journey-content .experience-list h3 {
+  font-size: 27px;
+  letter-spacing: -0.04em;
+  line-height: 1.25;
+}
+.journey-content .experience-detail {
+  font-size: 13px;
+  line-height: 1.8;
+}
+.journey-content .experience-list .experience-summary {
+  font-size: 13px;
+  line-height: 1.85;
+}
+.journey-content .contact-section {
+  background: transparent;
+  color: var(--paper);
+  --line: #3a3e33;
+  --muted: #abb0a4;
+  --focus: var(--acid);
+}
+.journey-content .contact-title h2 {
+  font-size: clamp(80px, 11vw, 168px);
+  line-height: 0.88;
+  color: var(--acid);
+}
+.journey-content .contact-title h2 > span {
+  color: var(--paper);
+}
+.journey-content .mobile-break {
+  display: block;
+}
+.journey-content .contact-arrow {
+  font-size: 85px;
+  width: 85px;
+  height: 85px;
+}
+.journey-content .contact-links {
+  display: block;
+  margin-top: 45px;
+  padding-top: 30px;
+}
+.journey-content .contact-primary {
+  font-size: clamp(23px, 3vw, 44px);
+}
+.journey-content .social-links {
+  margin-top: 28px;
+  font-size: 12px;
+  gap: 34px;
+}
+.journey-content .social-links a {
+  gap: 18px;
+}
+.journey-content .social-links a:hover {
+  color: var(--acid);
+}
+@media (max-width: 1100px) and (min-width: 701px) {
+  .journey-content > section {
+    width: 70%;
+    padding-block: 80px 100px;
+  }
+  .tree-stage {
+    width: 165vw;
+    left: 82.5%;
+  }
+  .tree-scrim {
+    background:
+      linear-gradient(
+        180deg,
+        #11130ffa 0%,
+        #11130f00 23%,
+        #11130f00 80%,
+        #11130f80 100%
+      ),
+      linear-gradient(
+        90deg,
+        #11130ffc 0%,
+        #11130ff5 42%,
+        #11130fe6 65%,
+        #11130f66 100%
+      );
+  }
+  .journey-content h2 {
+    font-size: 7.8vw;
+  }
+  .journey-content .about-intro {
+    font-size: 28px;
+  }
+  .journey-content .work-title h3 {
+    font-size: 4.8vw;
+  }
+  .journey-content .experience-list li {
+    grid-template-columns: 18px 0.9fr 1.1fr;
+    gap: 16px;
+  }
+  .journey-content .experience-list h3 {
+    font-size: 24px;
+  }
+  .tree-season {
+    right: 24px;
+    bottom: 25px;
+  }
+  .tree-season-note {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  :root {
+    scroll-padding-top: 24px;
+  }
+  .practice-hero {
+    min-height: calc(100svh - 82px);
+    padding-bottom: 90px;
+  }
+  .practice-name {
+    white-space: normal;
+    font-size: 25.5vw;
+    max-width: 480px;
+    line-height: 0.84;
+    letter-spacing: -0.085em;
+    margin-top: 10px;
+  }
+  .practice-deck {
+    padding-top: 30px;
+    gap: 25px;
+  }
+  .practice-deck > p {
+    font-size: 27px;
+    max-width: 240px;
+    line-height: 1.2;
+  }
+  .practice-deck .arrow-link {
+    min-width: 170px;
+    font-size: 11px;
+    gap: 20px;
+  }
+  .journey {
+    width: calc(100% - 40px);
+  }
+  .tree-stage {
+    width: 190vw;
+    height: 112svh;
+    left: 75%;
+    top: -6svh;
+    transform: translate3d(
+      calc(-50% - var(--tree-travel) * 4vw),
+      calc(var(--tree-travel) * -2svh),
+      0
+    );
+  }
+  .tree-scrim {
+    background:
+      linear-gradient(
+        180deg,
+        #11130ff5 0%,
+        #11130f00 24%,
+        #11130f00 85%,
+        #11130f66 100%
+      ),
+      linear-gradient(90deg, #11130ff0 0%, #11130fe0 45%, #11130fad 100%);
+  }
+  .tree-studio[data-view="hero"] .tree-scrim {
+    background:
+      linear-gradient(
+        180deg,
+        #11130ff5 0%,
+        #11130f00 25%,
+        #11130f00 78%,
+        #11130f66 100%
+      ),
+      linear-gradient(90deg, #11130ff0 0%, #11130fbb 48%, #11130f55 100%);
+  }
+  .tree-season {
+    display: none;
+  }
+  .journey-content > section {
+    width: 100%;
+    padding: 65px 0 80px;
+    scroll-margin-top: 0;
+  }
+  .journey-content .section-label {
+    font-size: 8px;
+    margin-bottom: 32px;
+  }
+  .journey-content .section-label > span {
+    font-size: 8px;
+  }
+  .journey-content h2,
+  .journey-content .about-section h2 {
+    font-size: clamp(43px, 11.4vw, 72px);
+  }
+  .journey-content .about-intro {
+    font-size: 25px;
+  }
+  .journey-content .about-body > div > p {
+    font-size: 15px;
+  }
+  .journey-content .toolkit dl {
+    gap: 26px 20px;
+  }
+  .journey-content .toolkit dt {
+    font-size: 12px;
+  }
+  .journey-content .toolkit dd {
+    font-size: 11px;
+  }
+  .journey-content .work-row {
+    grid-template-columns: 29px 1fr;
+    gap: 0 14px;
+    padding-block: 34px;
+  }
+  .journey-content .work-number {
+    font-size: 24px;
+  }
+  .journey-content .work-title {
+    padding-right: 28px;
+  }
+  .journey-content .work-title h3 {
+    font-size: clamp(31px, 8.6vw, 49px);
+  }
+  .journey-content .work-title h3 > a {
+    max-width: none;
+  }
+  .journey-content .work-arrow {
+    right: -5px;
+    top: 32px;
+    width: 30px;
+    font-size: 25px;
+  }
+  .journey-content .work-title > p,
+  .journey-content .work-context {
+    font-size: 8px;
+  }
+  .journey-content .work-description > p:not(.mono) {
+    font-size: 14px;
+  }
+  .journey-content .work-description .technology-list {
+    font-size: var(--story-detail-size);
+  }
+  .journey-content .experience-list li {
+    grid-template-columns: 20px 0.85fr 1.15fr;
+    gap: 12px;
+  }
+  .journey-content .experience-list h3 {
+    font-size: 20px;
+  }
+  .journey-content .experience-detail,
+  .journey-content .experience-list .experience-summary {
+    font-size: 11px;
+  }
+  .journey-content .current-role h3 {
+    font-size: 28px;
+  }
+  .journey-content .current-work-link {
+    max-width: 205px;
+    font-size: 11px;
+  }
+  .journey-content .current-role > .role-date {
+    font-size: 8px;
+    max-width: 105px;
+  }
+  .journey-content .contact-title h2 {
+    font-size: 26vw;
+  }
+  .journey-content .contact-primary {
+    font-size: 6vw;
+  }
+  .journey-content .contact-arrow {
+    font-size: 58px;
+    width: 55px;
+    height: 55px;
+  }
+}
+@media (max-width: 370px) {
+  .journey {
+    width: calc(100% - 32px);
+  }
+  .journey-content .work-row {
+    grid-template-columns: 22px 1fr;
+    gap: 0 12px;
+  }
+  .journey-content .work-title h3 {
+    font-size: 8.6vw;
+  }
+  .journey-content .experience-list h3 {
+    font-size: 17px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tree-ready .tree-fallback {
+    visibility: visible;
+  }
+  .tree-canvas {
+    display: none;
+  }
+  .journey-content .work-row,
+  .journey-content .work-row:is(:hover, :focus-within) {
+    --story-title-shift: 0px;
+    --story-arrow-turn: 0deg;
+  }
+  .tree-stage {
+    transform: translateX(-50%);
+  }
+}
+@media (forced-colors: active) {
+  .tree-backdrop {
+    display: none;
+  }
+}

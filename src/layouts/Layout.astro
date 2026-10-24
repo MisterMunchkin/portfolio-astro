@@ -1,218 +1,47 @@
 ---
-import { cn } from "@utils/cn";
-import type { ClassValue } from "clsx";
-
+import "../css/portfolio.css";
 interface Props {
-    title: string;
-    className?: ClassValue;
+  title: string;
+  description?: string;
+  preloadDisplay?: boolean;
 }
-
-const { title, className } = Astro.props;
+const {
+  title,
+  description = "Robin Dalmy is a software engineer working across mobile, full-stack development, and agentic engineering tools. Explore selected work and get in touch.",
+  preloadDisplay = false,
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="description" content="A Versatile developer." />
-        <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#11130f" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="preload"
+      href="/fonts/Geist-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    {
+      preloadDisplay && (
         <link
-            rel="preload"
-            href="/fonts/Geist-Medium.woff2"
-            as="font"
-            type="font/woff2"
-            crossorigin
+          rel="preload"
+          href="/fonts/Geist-Black.woff2"
+          as="font"
+          type="font/woff2"
+          crossorigin
         />
-        <meta name="generator" content={Astro.generator} />
-        <title>{title}</title>
-    </head>
-    <body class={cn("bg-bunker-950", className)}>
-        <slot />
-    </body>
+      )
+    }
+    <title>{title}</title>
+  </head>
+  <body><a class="skip-link" href="#main">Skip to content</a><slot /></body>
 </html>
-<style is:global>
-    /* Register your custom font family and tell the browser where to find it. */
-    @tailwind base;
-    @tailwind components;
-    @tailwind utilities;
-
-    /* width */
-    ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-    }
-
-    /* Track */
-    ::-webkit-scrollbar-track {
-        background: theme(colors.bunker.950);
-    }
-
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-        background: theme(colors.star-dust.800);
-        opacity: 0.5;
-        border-radius: 5px;
-    }
-
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-        background: theme(colors.amaranth.500);
-    }
-
-    @layer base {
-        @font-face {
-            font-family: "Geist";
-            src: url("/fonts/Geist-Medium.woff2") format("woff2");
-            font-weight: 500;
-            font-style: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: "Geist";
-            src: url("/fonts/Geist-Regular.woff2") format("woff2");
-            font-weight: 400;
-            font-style: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: "Geist";
-            src: url("/fonts/Geist-Thin.woff2") format("woff2");
-            font-weight: 100;
-            font-style: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: "Geist";
-            src: url("/fonts/Geist-SemiBold.woff2") format("woff2");
-            font-weight: 600;
-            font-style: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: "Geist";
-            src: url("/fonts/Geist-Light.woff2") format("woff2");
-            font-weight: 300;
-            font-style: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: "Geist";
-            src: url("/fonts/Geist-ExtraLight.woff2") format("woff2");
-            font-weight: 200;
-            font-style: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: "Geist";
-            src: url("/fonts/Geist-ExtraBold.woff2") format("woff2");
-            font-weight: 800;
-            font-style: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: "Geist";
-            src: url("/fonts/Geist-Bold.woff2") format("woff2");
-            font-weight: 700;
-            font-style: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: "Geist";
-            src: url("/fonts/Geist-Black.woff2") format("woff2");
-            font-weight: 900;
-            font-style: normal;
-            font-display: swap;
-        }
-    }
-    h1 {
-        display: block;
-        font-size: 2em;
-        margin-top: 0.67em;
-        margin-bottom: 0.67em;
-        margin-left: 0;
-        margin-right: 0;
-        font-weight: bold;
-    }
-    h2 {
-        display: block;
-        font-size: 1.5em;
-        margin-top: 0.83em;
-        margin-bottom: 0.83em;
-        margin-left: 0;
-        margin-right: 0;
-        font-weight: bold;
-    }
-    h3 {
-        display: block;
-        font-size: 1.17em;
-        margin-top: 1em;
-        margin-bottom: 1em;
-        margin-left: 0;
-        margin-right: 0;
-        font-weight: bold;
-    }
-    h4 {
-        display: block;
-        margin-top: 1.33em;
-        margin-bottom: 1.33em;
-        margin-left: 0;
-        margin-right: 0;
-        font-weight: bold;
-    }
-    h5 {
-        display: block;
-        font-size: 0.83em;
-        margin-top: 1.67em;
-        margin-bottom: 1.67em;
-        margin-left: 0;
-        margin-right: 0;
-        font-weight: bold;
-    }
-    h6 {
-        display: block;
-        font-size: 0.67em;
-        margin-top: 2.33em;
-        margin-bottom: 2.33em;
-        margin-left: 0;
-        margin-right: 0;
-        font-weight: bold;
-    }
-    :root {
-        --accent: 136, 58, 234;
-        --accent-light: 224, 204, 250;
-        --accent-dark: 49, 10, 101;
-        --accent-gradient: linear-gradient(
-            45deg,
-            rgb(var(--accent)),
-            rgb(var(--accent-light)) 30%,
-            white 60%
-        );
-        --swiper-scrollbar-drag-bg-color: theme(colors.amaranth.800);
-        --swiper-navigation-color: theme(colors.amaranth.800);
-    }
-    .glass-effect {
-        /* From https://css.glass */
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-    }
-    .text-gradient {
-        background-image: var(--accent-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-size: 400%;
-        background-position: 0%;
-    }
-    code {
-        font-family:
-            Menlo,
-            Monaco,
-            Lucida Console,
-            Liberation Mono,
-            DejaVu Sans Mono,
-            Bitstream Vera Sans Mono,
-            Courier New,
-            monospace;
-    }
-</style>

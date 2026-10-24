@@ -1,15 +1,13 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
 
-import tailwind from '@astrojs/tailwind';
+import mdx from "@astrojs/mdx";
 
-import mdx from '@astrojs/mdx';
+import react from "@astrojs/react";
 
-import react from '@astrojs/react';
-
-import icon from 'astro-icon';
+import icon from "astro-icon";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), mdx(), react(), icon()]
+  integrations: [mdx(), react(), icon()],
 });

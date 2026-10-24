@@ -1,0 +1,94 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navigation from "../../components/Navigation.astro";
+import Footer from "../../components/Footer.astro";
+import ConceptDiagram from "../../components/ConceptDiagram.astro";
+import { projects } from "../../data/portfolio";
+export function getStaticPaths() {
+  return projects.map((project, index) => ({
+    params: { slug: project.slug },
+    props: { project, next: projects[(index + 1) % projects.length] },
+  }));
+}
+const { project, next } = Astro.props;
+---
+
+<Layout title={`${project.title} — Robin Dalmy`} description={project.summary}>
+  <div id="top"></div><Navigation />
+  <main id="main" class="case-study">
+    <header class="case-header frame">
+      <a class="arrow-link" href="/#work"
+        ><span aria-hidden="true">←</span> All work</a
+      ><div class="case-kicker mono">
+        <p>{project.category}</p><span
+          >Engineering story / {project.number}</span
+        >
+      </div><h1>{project.title}</h1><p class="case-subtitle">
+        {project.subtitle}
+      </p><div class="case-meta">
+        <p>{project.context}</p><ul
+          class="technology-list"
+          aria-label="Technologies"
+        >
+          {project.tags.map((tag) => <li>{tag}</li>)}
+        </ul>
+      </div>
+    </header>
+    <div class="case-content paper">
+      <div class="frame">
+        <ConceptDiagram kind={project.visual} /><article
+          class="case-body"
+          aria-label="Engineering story"
+        >
+          <aside>
+            <p class="mono">In this story</p><nav aria-label="Story sections">
+              {
+                project.sections.map((section, i) => (
+                  <a href={`#section-${i}`}>
+                    <span class="mono">0{i + 1}</span>
+                    {section.title}
+                  </a>
+                ))
+              }
+            </nav>
+          </aside><div>
+            <p class="case-intro">{project.intro}</p>{
+              project.sections.map((section, i) => (
+                <section id={`section-${i}`}>
+                  <>
+                    <h2>{section.title}</h2>
+                    {/* prettier-ignore */}
+                    <p>{section.text}{"link" in section && section.link && <>{" "}<a class="case-reference" href={section.link.href}>{section.link.label}</a>.</>}</p>
+                  </>
+                </section>
+              ))
+            }<p class="case-note">{project.note}</p><a
+              class="arrow-link"
+              href="https://www.linkedin.com/in/robin-dalmy1997"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Let’s talk about the work <span aria-hidden="true">↗</span><span
+                class="sr-only"
+              >
+                on LinkedIn, opens in a new tab</span
+              ></a
+            >
+          </div>
+        </article>
+      </div>
+    </div>
+    <nav class="next-story frame" aria-label="More work">
+      <p class="mono">Keep exploring / {next.category}</p><a
+        href={`/work/${next.slug}/`}
+        >{next.title}<span aria-hidden="true">↗</span></a
+      >
+    </nav>
+  </main><Footer />
+</Layout>
+
+<style>
+  .case-reference {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+</style>
